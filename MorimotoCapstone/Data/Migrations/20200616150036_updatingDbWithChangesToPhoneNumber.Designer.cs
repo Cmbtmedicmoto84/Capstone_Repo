@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
 namespace MorimotoCapstone.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200616150036_updatingDbWithChangesToPhoneNumber")]
+    partial class updatingDbWithChangesToPhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace MorimotoCapstone.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f7c2274a-e664-42b6-9b0a-68e732de10e2",
-                            ConcurrencyStamp = "cc17e25a-d647-4041-bdaf-11ce31d76d2f",
+                            Id = "c0924d8b-9a1d-4598-9ab0-6b663640fcd9",
+                            ConcurrencyStamp = "69a42c98-2334-412b-a029-71d85305c0c3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "2c4b53b2-1909-493f-8e70-cd5208e4c722",
-                            ConcurrencyStamp = "466d2a29-431c-47f0-adc0-f6fe41df0953",
+                            Id = "755ea837-6197-4e76-8839-9228ecf21269",
+                            ConcurrencyStamp = "60144cd1-c498-4fd3-a106-ff6e609a4dff",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -231,9 +233,9 @@ namespace MorimotoCapstone.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
+            modelBuilder.Entity("MorimotoCapstone.Models.Address", b =>
                 {
-                    b.Property<int>("CustomerAccountId")
+                    b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -246,6 +248,24 @@ namespace MorimotoCapstone.Data.Migrations
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
+                {
+                    b.Property<int>("CustomerAccountId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -261,12 +281,6 @@ namespace MorimotoCapstone.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ZipCode")
-                        .HasColumnType("int");
 
                     b.HasKey("CustomerAccountId");
 

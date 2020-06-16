@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
 namespace MorimotoCapstone.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200616152602_updatingDbRemovedAddressModelControllerAndViews")]
+    partial class updatingDbRemovedAddressModelControllerAndViews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace MorimotoCapstone.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f7c2274a-e664-42b6-9b0a-68e732de10e2",
-                            ConcurrencyStamp = "cc17e25a-d647-4041-bdaf-11ce31d76d2f",
+                            Id = "023de30e-5a89-4087-99a2-a193750c11a0",
+                            ConcurrencyStamp = "e72acda5-1742-4528-9ff6-1c9a968b30d1",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "2c4b53b2-1909-493f-8e70-cd5208e4c722",
-                            ConcurrencyStamp = "466d2a29-431c-47f0-adc0-f6fe41df0953",
+                            Id = "5fd114d0-d8b3-430a-8a58-835319fc48f0",
+                            ConcurrencyStamp = "83408930-9156-4a48-b2f3-8b134fed1e9d",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

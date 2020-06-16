@@ -14,8 +14,13 @@ namespace MorimotoCapstone.Models
         public int CustomerAccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string AddressLineOne { get; set; }
+        public string AddressLineTwo { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int ZipCode { get; set; }
         public string Email { get; set; }
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
 
         [ForeignKey("IdentityUser")]
