@@ -1,4 +1,4 @@
-﻿@model MorimotoCapstone.Models.Employee
+﻿@model MorimotoCapstone.Models.Product
 
 @{
     ViewData["Title"] = "Delete";
@@ -9,31 +9,31 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Employee</h4>
+    <h4>Product</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.ProductName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.ProductName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.ProductDescription)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.ProductDescription)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdentityUser)
+            @Html.DisplayNameFor(model => model.ProductPrice)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdentityUser.Id)
-        </dd class>
+            @Html.DisplayFor(model => model.ProductPrice)
+        </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="EmployeeClassId" />
+        <input type="hidden" asp-for="ProductId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

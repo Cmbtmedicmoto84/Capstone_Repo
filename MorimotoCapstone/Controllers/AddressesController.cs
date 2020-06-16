@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,23 +12,23 @@ using MorimotoCapstone.Models;
 namespace MorimotoCapstone.Controllers
 {
     [Authorize(Roles = "Employee")]
-    public class EmployeesController : Controller
+    public class AddressesController : Controller
     {
         private readonly MorimotoCapstoneContext _context;
 
-        public EmployeesController(MorimotoCapstoneContext context)
+        public AddressesController(MorimotoCapstoneContext context)
         {
             _context = context;
         }
 
-        // GET: Employees
+        // GET: Addresses
         public async Task<IActionResult> Index()
         {
-            var morimotoCapstoneContext = _context.Employee.Include(e => e.IdentityUser);
-            return View(await morimotoCapstoneContext.ToListAsync());
+            return View(await _context.Address.ToListAsync());
         }
 
-        // GET: Employees/Details/5
+        // GET: Addresses/Details/5
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,42 +36,41 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.EmployeeClassId == id);
-            if (employee == null)
+            var address = await _context.Address
+                .FirstOrDefaultAsync(m => m.AddressId == id);
+            if (address == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(address);
         }
 
-        // GET: Employees/Create
+        // GET: Addresses/Create
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id");
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: Addresses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeClassId,FirstName,LastName,IdentityUserId")] Employee employee)
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Create([Bind("AddressId,AddressLineOne,AddressLineTwo,City,State,ZipCode")] Address address)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(address);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", employee.IdentityUserId);
-            return View(employee);
+            return View(address);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Addresses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,23 +78,22 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
+            var address = await _context.Address.FindAsync(id);
+            if (address == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", employee.IdentityUserId);
-            return View(employee);
+            return View(address);
         }
 
-        // POST: Employees/Edit/5
+        // POST: Addresses/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeClassId,FirstName,LastName,IdentityUserId")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("AddressId,AddressLineOne,AddressLineTwo,City,State,ZipCode")] Address address)
         {
-            if (id != employee.EmployeeClassId)
+            if (id != address.AddressId)
             {
                 return NotFound();
             }
@@ -105,12 +102,12 @@ namespace MorimotoCapstone.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(address);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.EmployeeClassId))
+                    if (!AddressExists(address.AddressId))
                     {
                         return NotFound();
                     }
@@ -121,11 +118,10 @@ namespace MorimotoCapstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", employee.IdentityUserId);
-            return View(employee);
+            return View(address);
         }
 
-        // GET: Employees/Delete/5
+        // GET: Addresses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,31 +129,30 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.EmployeeClassId == id);
-            if (employee == null)
+            var address = await _context.Address
+                .FirstOrDefaultAsync(m => m.AddressId == id);
+            if (address == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(address);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Addresses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            _context.Employee.Remove(employee);
+            var address = await _context.Address.FindAsync(id);
+            _context.Address.Remove(address);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool AddressExists(int id)
         {
-            return _context.Employee.Any(e => e.EmployeeClassId == id);
+            return _context.Address.Any(e => e.AddressId == id);
         }
     }
 }

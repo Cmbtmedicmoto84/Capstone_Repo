@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<MorimotoCapstone.Models.Customer>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "CustomerIndex";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>CustomerIndex</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -19,6 +19,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdentityUser)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -30,6 +39,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CustomerAccountId">Edit</a> |

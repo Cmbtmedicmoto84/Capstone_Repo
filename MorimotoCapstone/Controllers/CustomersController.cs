@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using MorimotoCapstone.Models;
 
 namespace MorimotoCapstone.Controllers
 {
+    [Authorize(Roles = "Employee")]
     public class CustomersController : Controller
     {
         private readonly MorimotoCapstoneContext _context;
@@ -22,10 +25,12 @@ namespace MorimotoCapstone.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customer.ToListAsync());
+            var morimotoCapstoneContext = _context.Customer.Include(c => c.IdentityUser);
+            return View(await morimotoCapstoneContext.ToListAsync());
         }
 
         // GET: Customers/Details/5
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,6 +39,7 @@ namespace MorimotoCapstone.Controllers
             }
 
             var customer = await _context.Customer
+                .Include(c => c.IdentityUser)
                 .FirstOrDefaultAsync(m => m.CustomerAccountId == id);
             if (customer == null)
             {
@@ -44,8 +50,10 @@ namespace MorimotoCapstone.Controllers
         }
 
         // GET: Customers/Create
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
+            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id");
             return View();
         }
 
@@ -54,7 +62,8 @@ namespace MorimotoCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerAccountId,FirstName,LastName")] Customer customer)
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Create([Bind("CustomerAccountId,FirstName,LastName,Email,PhoneNumber,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +71,7 @@ namespace MorimotoCapstone.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -78,6 +88,7 @@ namespace MorimotoCapstone.Controllers
             {
                 return NotFound();
             }
+            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -86,7 +97,7 @@ namespace MorimotoCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerAccountId,FirstName,LastName")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerAccountId,FirstName,LastName,Email,PhoneNumber,IdentityUserId")] Customer customer)
         {
             if (id != customer.CustomerAccountId)
             {
@@ -113,6 +124,7 @@ namespace MorimotoCapstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -125,6 +137,7 @@ namespace MorimotoCapstone.Controllers
             }
 
             var customer = await _context.Customer
+                .Include(c => c.IdentityUser)
                 .FirstOrDefaultAsync(m => m.CustomerAccountId == id);
             if (customer == null)
             {
