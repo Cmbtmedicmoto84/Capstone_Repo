@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +10,11 @@ using MorimotoCapstone.Models;
 
 namespace MorimotoCapstone.Controllers
 {
-    [Authorize(Roles = "Employee")]
     public class EmployeesController : Controller
     {
-        private readonly MorimotoCapstoneContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public EmployeesController(MorimotoCapstoneContext context)
+        public EmployeesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -25,8 +22,8 @@ namespace MorimotoCapstone.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var morimotoCapstoneContext = _context.Employee.Include(e => e.IdentityUser);
-            return View(await morimotoCapstoneContext.ToListAsync());
+            var applicationDbContext = _context.Employees.Include(e => e.IdentityUser);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Employees/Details/5
@@ -37,7 +34,7 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
+            var employee = await _context.Employees
                 .Include(e => e.IdentityUser)
                 .FirstOrDefaultAsync(m => m.EmployeeClassId == id);
             if (employee == null)
@@ -51,7 +48,7 @@ namespace MorimotoCapstone.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id");
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -68,7 +65,7 @@ namespace MorimotoCapstone.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", employee.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(employee);
         }
 
@@ -80,12 +77,12 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", employee.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(employee);
         }
 
@@ -121,7 +118,7 @@ namespace MorimotoCapstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", employee.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(employee);
         }
 
@@ -133,7 +130,7 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
+            var employee = await _context.Employees
                 .Include(e => e.IdentityUser)
                 .FirstOrDefaultAsync(m => m.EmployeeClassId == id);
             if (employee == null)
@@ -149,15 +146,15 @@ namespace MorimotoCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            _context.Employee.Remove(employee);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
-            return _context.Employee.Any(e => e.EmployeeClassId == id);
+            return _context.Employees.Any(e => e.EmployeeClassId == id);
         }
     }
 }

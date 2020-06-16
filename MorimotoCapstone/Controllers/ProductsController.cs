@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,25 +10,22 @@ using MorimotoCapstone.Models;
 
 namespace MorimotoCapstone.Controllers
 {
-    [Authorize(Roles = "Employee")]
     public class ProductsController : Controller
     {
-        private readonly MorimotoCapstoneContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ProductsController(MorimotoCapstoneContext context)
+        public ProductsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Products
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
         }
 
         // GET: Products/Details/5
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

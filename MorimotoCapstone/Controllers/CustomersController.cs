@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +10,11 @@ using MorimotoCapstone.Models;
 
 namespace MorimotoCapstone.Controllers
 {
-    [Authorize(Roles = "Employee")]
     public class CustomersController : Controller
     {
-        private readonly MorimotoCapstoneContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CustomersController(MorimotoCapstoneContext context)
+        public CustomersController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -25,12 +22,11 @@ namespace MorimotoCapstone.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var morimotoCapstoneContext = _context.Customer.Include(c => c.IdentityUser);
-            return View(await morimotoCapstoneContext.ToListAsync());
+            var applicationDbContext = _context.Customers.Include(c => c.IdentityUser);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Customers/Details/5
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,7 +34,7 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customer
+            var customer = await _context.Customers
                 .Include(c => c.IdentityUser)
                 .FirstOrDefaultAsync(m => m.CustomerAccountId == id);
             if (customer == null)
@@ -50,10 +46,9 @@ namespace MorimotoCapstone.Controllers
         }
 
         // GET: Customers/Create
-        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id");
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -62,7 +57,6 @@ namespace MorimotoCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([Bind("CustomerAccountId,FirstName,LastName,Email,PhoneNumber,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
@@ -71,7 +65,7 @@ namespace MorimotoCapstone.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", customer.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -83,12 +77,12 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", customer.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -124,7 +118,7 @@ namespace MorimotoCapstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", customer.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -136,7 +130,7 @@ namespace MorimotoCapstone.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customer
+            var customer = await _context.Customers
                 .Include(c => c.IdentityUser)
                 .FirstOrDefaultAsync(m => m.CustomerAccountId == id);
             if (customer == null)
@@ -152,15 +146,15 @@ namespace MorimotoCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
-            _context.Customer.Remove(customer);
+            var customer = await _context.Customers.FindAsync(id);
+            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customer.Any(e => e.CustomerAccountId == id);
+            return _context.Customers.Any(e => e.CustomerAccountId == id);
         }
     }
 }

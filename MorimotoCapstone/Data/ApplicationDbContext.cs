@@ -46,5 +46,9 @@ namespace MorimotoCapstone.Data
                     }
                 );
         }
+
+        public DbSet<MorimotoCapstone.Models.Product> Product { get; set; }
+
+        public DbSet<MorimotoCapstone.Models.Address> Address { get; set; }
     }
 }

@@ -48,8 +48,6 @@ namespace MorimotoCapstone
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContext<MorimotoCapstoneContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MorimotoCapstoneContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
