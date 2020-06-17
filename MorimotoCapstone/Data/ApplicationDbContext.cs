@@ -13,14 +13,15 @@ namespace MorimotoCapstone.Data
         public ApplicationDbContext()
         {
         }
-        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<InstallTech> InstallTechs { get; set; }
+        public DbSet<CustomerServiceRep> CustomerServiceReps { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,13 +42,27 @@ namespace MorimotoCapstone.Data
                 .HasData(
                     new IdentityRole
                     {
-                        Name = "Employee",
-                        NormalizedName = "EMPLOYEE"
+                        Name = "InstallTech",
+                        NormalizedName = "INSTALLTECH"
+                    }
+                );
+
+            base.OnModelCreating(builder);
+
+            builder.Entity<IdentityRole>()
+                .HasData(
+                    new IdentityRole
+                    {
+                        Name = "CustomerServiceRep",
+                        NormalizedName = "CUSTOMERSERVICEREP"
                     }
                 );
         }
 
-        public DbSet<MorimotoCapstone.Models.Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<HelpSupportTicket> HelpSupportTickets { get; set; }
+        public DbSet<ServiceAppointment> ServiceAppointments { get; set; }
+        public DbSet<ServiceInstallOrder> ServiceInstallOrders { get; set; }
 
     }
 }

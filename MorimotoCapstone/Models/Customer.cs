@@ -12,20 +12,26 @@ namespace MorimotoCapstone.Models
     {
         [Key]
         public int CustomerAccountId { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string AddressLineOne { get; set; }
         public string AddressLineTwo { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public int ZipCode { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-
+        public string ZipCode { get; set; }
+        public string ServiceStatus { get; set; }
+        public double AccountBalance { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+
+        [ForeignKey("Product")] //subscribed product
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
 
     }
 }

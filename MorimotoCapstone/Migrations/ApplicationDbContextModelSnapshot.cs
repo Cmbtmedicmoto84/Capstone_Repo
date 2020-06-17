@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
-namespace MorimotoCapstone.Data.Migrations
+namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200616131047_addedUserRolesEmployeeAndCustomer")]
-    partial class addedUserRolesEmployeeAndCustomer
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,17 +48,24 @@ namespace MorimotoCapstone.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a8e62b9c-fdd1-4731-a540-29a0603f133b",
-                            ConcurrencyStamp = "39a18a1f-ea2d-4ca0-9c10-fc29f0d3ecc6",
+                            Id = "36506ba6-ad55-4ebe-aaf9-75afd97d5ccc",
+                            ConcurrencyStamp = "f93467fd-7462-48fa-a778-13e8e58c91b4",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "5dcace29-6674-4a29-8563-ebff40964b82",
-                            ConcurrencyStamp = "c59fa65b-410b-4b53-a833-b2b92c0329d0",
-                            Name = "Employee",
-                            NormalizedName = "EMPLOYEE"
+                            Id = "709d5d24-bbbb-43ec-90d1-8bf12274e7a2",
+                            ConcurrencyStamp = "e046fbb8-e825-4f1b-8615-48556de66e90",
+                            Name = "InstallTech",
+                            NormalizedName = "INSTALLTECH"
+                        },
+                        new
+                        {
+                            Id = "2cc2f2e2-35ae-4f51-8c67-02e85f478841",
+                            ConcurrencyStamp = "79ee0004-046d-44e3-a6eb-e1abca8a8cc1",
+                            Name = "CustomerServiceRep",
+                            NormalizedName = "CUSTOMERSERVICEREP"
                         });
                 });
 
@@ -240,20 +245,57 @@ namespace MorimotoCapstone.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("AccountBalance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("AddressLineOne")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLineTwo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CustomerAccountId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("MorimotoCapstone.Models.Employee", b =>
+            modelBuilder.Entity("MorimotoCapstone.Models.CustomerServiceRep", b =>
                 {
-                    b.Property<int>("EmployeeClassId")
+                    b.Property<int>("CustomerServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -261,12 +303,160 @@ namespace MorimotoCapstone.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("EmployeeClassId");
+                    b.HasKey("CustomerServiceId");
 
-                    b.ToTable("Employees");
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("CustomerServiceReps");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.HelpSupportTicket", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CustomerAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsResolved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("CustomerAccountId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("HelpSupportTickets");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.InstallTech", b =>
+                {
+                    b.Property<int>("TechId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TechId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("InstallTechs");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.Product", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ProductDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProductPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.ServiceAppointment", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AppointmentNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AppointmentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AppointmentId");
+
+                    b.HasIndex("CustomerAccountId");
+
+                    b.ToTable("ServiceAppointments");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.ServiceInstallOrder", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CustomerAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrderNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceOrderStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TechId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("CustomerAccountId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TechId");
+
+                    b.ToTable("ServiceInstallOrders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -316,6 +506,78 @@ namespace MorimotoCapstone.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.CustomerServiceRep", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.HelpSupportTicket", b =>
+                {
+                    b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.InstallTech", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.ServiceAppointment", b =>
+                {
+                    b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.ServiceInstallOrder", b =>
+                {
+                    b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MorimotoCapstone.Models.InstallTech", "InstallTech")
+                        .WithMany()
+                        .HasForeignKey("TechId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace MorimotoCapstone.Models
 {
-    public class Employee
+    public class CustomerServiceRep
     {
         [Key]
-        public int EmployeeClassId { get; set; }
+        public int CustomerServiceId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+
+
     }
 }
