@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200618185003_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6972fcb2-0a6e-4e25-b7c0-8360392be8ae",
-                            ConcurrencyStamp = "bbc0e782-85e4-4cba-bcdb-47f182e68be0",
+                            Id = "c39b5b43-7c85-49d4-8b67-5f9a49d25ac9",
+                            ConcurrencyStamp = "60a4e7be-7ef0-41f0-b06a-da88cac1de33",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "f78d3d26-7cfd-448c-9c9f-a771d751ec88",
-                            ConcurrencyStamp = "925407c1-1dd0-481f-a0f0-42cd73a95ff9",
+                            Id = "85ec2dc9-fe64-420b-9793-dcae796f909f",
+                            ConcurrencyStamp = "febe0dfe-7e36-4c23-9cba-f07bfce58900",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "867d9e54-34b5-4c83-a3bc-d0d00e970e29",
-                            ConcurrencyStamp = "c106dc83-9131-41ad-b326-f7467bdb2bdb",
+                            Id = "9dd284b6-c773-44f0-9937-25869ff5ea8a",
+                            ConcurrencyStamp = "25a04ab9-6cee-41d1-a54d-3781f206e649",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -240,7 +242,7 @@ namespace MorimotoCapstone.Migrations
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
                 {
-                    b.Property<int>("AccountNumber")
+                    b.Property<int>("CustomerAccountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -270,6 +272,9 @@ namespace MorimotoCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ServiceStatus")
                         .HasColumnType("nvarchar(max)");
 
@@ -281,9 +286,11 @@ namespace MorimotoCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber");
+                    b.HasKey("CustomerAccountId");
 
                     b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Customers");
                 });
@@ -384,29 +391,6 @@ namespace MorimotoCapstone.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 12,
-                            ProductDescription = "Our fastest Internet with syncronous Up/Down speeds of 1 Gig!!",
-                            ProductName = "Ultra-Fast Internet",
-                            ProductPrice = 59.990000000000002
-                        },
-                        new
-                        {
-                            ProductId = 22,
-                            ProductDescription = "Fast internet with Up/Down speeds of 300Mbps!",
-                            ProductName = "Fast Internet",
-                            ProductPrice = 39.990000000000002
-                        },
-                        new
-                        {
-                            ProductId = 32,
-                            ProductDescription = "Basic fiber internet speeds of up to 100Mbps!",
-                            ProductName = "Standard Internet",
-                            ProductPrice = 24.989999999999998
-                        });
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.ServiceAppointment", b =>
@@ -533,6 +517,12 @@ namespace MorimotoCapstone.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.CustomerServiceRep", b =>

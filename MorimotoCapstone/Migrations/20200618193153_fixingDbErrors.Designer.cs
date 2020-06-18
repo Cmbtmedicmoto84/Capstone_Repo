@@ -10,8 +10,8 @@ using MorimotoCapstone.Data;
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200617004524_initial")]
-    partial class initial
+    [Migration("20200618193153_fixingDbErrors")]
+    partial class fixingDbErrors
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "36506ba6-ad55-4ebe-aaf9-75afd97d5ccc",
-                            ConcurrencyStamp = "f93467fd-7462-48fa-a778-13e8e58c91b4",
+                            Id = "e9b7091a-e2db-4600-959c-744dc5dad031",
+                            ConcurrencyStamp = "b16f2975-b43d-474c-b0dd-af16c99d8ce2",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "709d5d24-bbbb-43ec-90d1-8bf12274e7a2",
-                            ConcurrencyStamp = "e046fbb8-e825-4f1b-8615-48556de66e90",
+                            Id = "8d0a3898-0bc1-438c-a85d-2733fc5f064c",
+                            ConcurrencyStamp = "4efb3391-6bce-4cac-a12e-870a58f02a92",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "2cc2f2e2-35ae-4f51-8c67-02e85f478841",
-                            ConcurrencyStamp = "79ee0004-046d-44e3-a6eb-e1abca8a8cc1",
+                            Id = "56211f84-e3f9-41fc-a6d8-a3b45b9c73c1",
+                            ConcurrencyStamp = "defec6ab-ce3e-498c-899b-080456e8e983",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -242,7 +242,7 @@ namespace MorimotoCapstone.Migrations
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerAccountId")
+                    b.Property<int>("AccountNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -251,27 +251,25 @@ namespace MorimotoCapstone.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("AddressLineOne")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLineTwo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
@@ -281,12 +279,14 @@ namespace MorimotoCapstone.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerAccountId");
+                    b.HasKey("AccountNumber");
 
                     b.HasIndex("IdentityUserId");
 
@@ -521,7 +521,7 @@ namespace MorimotoCapstone.Migrations
                     b.HasOne("MorimotoCapstone.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -537,13 +537,13 @@ namespace MorimotoCapstone.Migrations
                     b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerAccountId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MorimotoCapstone.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -559,7 +559,7 @@ namespace MorimotoCapstone.Migrations
                     b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerAccountId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -568,19 +568,19 @@ namespace MorimotoCapstone.Migrations
                     b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerAccountId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MorimotoCapstone.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MorimotoCapstone.Models.InstallTech", "InstallTech")
                         .WithMany()
                         .HasForeignKey("TechId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

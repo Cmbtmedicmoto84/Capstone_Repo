@@ -185,7 +185,7 @@ namespace MorimotoCapstone.Migrations
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,7 +206,7 @@ namespace MorimotoCapstone.Migrations
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,15 +215,13 @@ namespace MorimotoCapstone.Migrations
                 {
                     CustomerAccountId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    AddressLineOne = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    AddressLineOne = table.Column<string>(nullable: false),
                     AddressLineTwo = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    State = table.Column<string>(nullable: true),
-                    ZipCode = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: false),
+                    State = table.Column<string>(nullable: false),
+                    ZipCode = table.Column<string>(nullable: false),
                     ServiceStatus = table.Column<string>(nullable: true),
                     AccountBalance = table.Column<double>(nullable: false),
                     IdentityUserId = table.Column<string>(nullable: true),
@@ -338,17 +336,17 @@ namespace MorimotoCapstone.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "36506ba6-ad55-4ebe-aaf9-75afd97d5ccc", "f93467fd-7462-48fa-a778-13e8e58c91b4", "Customer", "CUSTOMER" });
+                values: new object[] { "c39b5b43-7c85-49d4-8b67-5f9a49d25ac9", "60a4e7be-7ef0-41f0-b06a-da88cac1de33", "Customer", "CUSTOMER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "709d5d24-bbbb-43ec-90d1-8bf12274e7a2", "e046fbb8-e825-4f1b-8615-48556de66e90", "InstallTech", "INSTALLTECH" });
+                values: new object[] { "85ec2dc9-fe64-420b-9793-dcae796f909f", "febe0dfe-7e36-4c23-9cba-f07bfce58900", "InstallTech", "INSTALLTECH" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2cc2f2e2-35ae-4f51-8c67-02e85f478841", "79ee0004-046d-44e3-a6eb-e1abca8a8cc1", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
+                values: new object[] { "9dd284b6-c773-44f0-9937-25869ff5ea8a", "25a04ab9-6cee-41d1-a54d-3781f206e649", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

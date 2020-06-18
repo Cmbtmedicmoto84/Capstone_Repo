@@ -23,11 +23,15 @@ namespace MorimotoCapstone.ActionFilters
             {
                 if (_claimsPrincipal.IsInRole("Customer"))
                 {
-                    context.Result = new RedirectToActionResult("Details", "Customers", null);
+                    context.Result = new RedirectToActionResult("Index", "Customers", null);
                 }
-                else if (_claimsPrincipal.IsInRole("Employee"))
+                else if (_claimsPrincipal.IsInRole("CustomerServiceRep"))
                 {
-                    context.Result = new RedirectToActionResult("Index", "Employees", null);
+                    context.Result = new RedirectToActionResult("Index", "CustomerServiceRep", null);
+                }
+                else if (_claimsPrincipal.IsInRole("InstallTech"))
+                {
+                    context.Result = new RedirectToActionResult("Index", "InstallTech", null);
                 }
             }
         }
