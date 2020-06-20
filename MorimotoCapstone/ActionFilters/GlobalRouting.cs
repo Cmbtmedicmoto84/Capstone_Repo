@@ -10,7 +10,7 @@ namespace MorimotoCapstone.ActionFilters
 {
     public class GlobalRouting : IActionFilter
     {
-        private readonly ClaimsPrincipal _claimsPrincipal;
+        readonly ClaimsPrincipal _claimsPrincipal;
         public GlobalRouting(ClaimsPrincipal claimsPrincipal)
         {
             _claimsPrincipal = claimsPrincipal;
@@ -27,11 +27,11 @@ namespace MorimotoCapstone.ActionFilters
                 }
                 else if (_claimsPrincipal.IsInRole("CustomerServiceRep"))
                 {
-                    context.Result = new RedirectToActionResult("Index", "CustomerServiceRep", null);
+                    context.Result = new RedirectToActionResult("Index", "CustomerServiceReps", null);
                 }
                 else if (_claimsPrincipal.IsInRole("InstallTech"))
                 {
-                    context.Result = new RedirectToActionResult("Index", "InstallTech", null);
+                    context.Result = new RedirectToActionResult("Index", "InstallTechs", null);
                 }
             }
         }

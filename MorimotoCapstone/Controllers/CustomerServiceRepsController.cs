@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MorimotoCapstone.ActionFilters;
 using MorimotoCapstone.Data;
 using MorimotoCapstone.Models;
 
@@ -12,7 +16,7 @@ namespace MorimotoCapstone.Controllers
 {
     public class CustomerServiceRepsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        readonly ApplicationDbContext _context;
 
         public CustomerServiceRepsController(ApplicationDbContext context)
         {
@@ -20,36 +24,32 @@ namespace MorimotoCapstone.Controllers
         }
 
         // GET: CustomerServiceReps
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            var applicationDbContext = _context.CustomerServiceReps.Include(c => c.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInCustomerServiceRep = _context.CustomerServiceReps.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            if (loggedInCustomerServiceRep == null)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(loggedInCustomerServiceRep);
         }
 
         // GET: CustomerServiceReps/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customerServiceRep = await _context.CustomerServiceReps
-                .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.CustomerServiceId == id);
-            if (customerServiceRep == null)
-            {
-                return NotFound();
-            }
-
-            return View(customerServiceRep);
+            var loggedInCustomerServiceRep = _context.CustomerServiceReps.Include(csr => csr.IdentityUserId).SingleOrDefault(csr => csr.CustomerServiceRepId == id);
+            return View(loggedInCustomerServiceRep);
         }
 
         // GET: CustomerServiceReps/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInCustomerServiceRep = _context.CustomerServiceReps.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            CustomerServiceRep customerServiceRep = new CustomerServiceRep();
+            return View(loggedInCustomerServiceRep);
         }
 
         // POST: CustomerServiceReps/Create
@@ -57,15 +57,16 @@ namespace MorimotoCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerServiceId,FirstName,LastName,IdentityUserId")] CustomerServiceRep customerServiceRep)
+        public IActionResult Create([Bind("CustomerServiceRepId,FirstName,LastName,IdentityUserId")] CustomerServiceRep customerServiceRep)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customerServiceRep);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                customerServiceRep.IdentityUserId = userId;
+                _context.CustomerServiceReps.Add(customerServiceRep);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customerServiceRep.IdentityUserId);
             return View(customerServiceRep);
         }
 
@@ -82,7 +83,7 @@ namespace MorimotoCapstone.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customerServiceRep.IdentityUserId);
+
             return View(customerServiceRep);
         }
 
@@ -93,7 +94,7 @@ namespace MorimotoCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CustomerServiceId,FirstName,LastName,IdentityUserId")] CustomerServiceRep customerServiceRep)
         {
-            if (id != customerServiceRep.CustomerServiceId)
+            if (id != customerServiceRep.CustomerServiceRepId)
             {
                 return NotFound();
             }
@@ -107,7 +108,7 @@ namespace MorimotoCapstone.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerServiceRepExists(customerServiceRep.CustomerServiceId))
+                    if (!CustomerServiceRepExists(customerServiceRep.CustomerServiceRepId))
                     {
                         return NotFound();
                     }
@@ -132,7 +133,7 @@ namespace MorimotoCapstone.Controllers
 
             var customerServiceRep = await _context.CustomerServiceReps
                 .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.CustomerServiceId == id);
+                .FirstOrDefaultAsync(m => m.CustomerServiceRepId == id);
             if (customerServiceRep == null)
             {
                 return NotFound();
@@ -154,7 +155,7 @@ namespace MorimotoCapstone.Controllers
 
         private bool CustomerServiceRepExists(int id)
         {
-            return _context.CustomerServiceReps.Any(e => e.CustomerServiceId == id);
+            return _context.CustomerServiceReps.Any(e => e.CustomerServiceRepId == id);
         }
     }
 }

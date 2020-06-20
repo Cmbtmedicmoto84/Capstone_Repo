@@ -40,14 +40,15 @@ namespace MorimotoCapstone.Controllers
             
             if (loggedInCustomer == null)
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
 
             return View(loggedInCustomer);
         }
 
         // GET: Customers/Create
-        public ActionResult Create()
+        [HttpPost]
+        public IActionResult Create()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInCustomer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();

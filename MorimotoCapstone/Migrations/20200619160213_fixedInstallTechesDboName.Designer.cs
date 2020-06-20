@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200619160213_fixedInstallTechesDboName")]
+    partial class fixedInstallTechesDboName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "806ab74c-c920-4d11-8168-942c01ba3162",
-                            ConcurrencyStamp = "e670735f-8f62-44e5-b742-6143e9128a49",
+                            Id = "aba53c67-9a5f-426d-8fcb-9a78fde0dba9",
+                            ConcurrencyStamp = "23821416-7b9c-4fdb-832e-608fc54bfb0d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "94ec509f-4ada-4ccc-b569-14dadb63e062",
-                            ConcurrencyStamp = "a2792f6f-6957-43c9-85a0-2d752d2cf8d0",
+                            Id = "c215eacd-d4ac-450d-a680-ccb753272d63",
+                            ConcurrencyStamp = "432f1085-44bb-493a-b5a6-a1e960a56118",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "65882cd6-7bf5-48ac-9eb6-f972ab70508b",
-                            ConcurrencyStamp = "59c171a4-8fbc-4dfb-886e-5065b00440cb",
+                            Id = "5ca5c933-8787-4b1b-b51c-3a359da90ae1",
+                            ConcurrencyStamp = "1b7de1f3-6072-4dc1-97da-fa1faac26fd4",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -352,7 +354,7 @@ namespace MorimotoCapstone.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("InstallTechs");
+                    b.ToTable("InstallTeches");
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.Product", b =>

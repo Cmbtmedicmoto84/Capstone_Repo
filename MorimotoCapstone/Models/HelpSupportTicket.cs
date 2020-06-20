@@ -15,12 +15,12 @@ namespace MorimotoCapstone.Models
         public string CustomerComments { get; set; }
         public bool IsResolved { get; set; }
         
-        [ForeignKey("Customer")]
-        public int CustomerAccountId { get; set; }
-        public Customer Customer { get; set; }
+        //[ForeignKey("Customer")]
+        //public int CustomerAccountId { get; set; }
+        //public Customer Customer { get; set; }
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        //[ForeignKey("Product")]
+        //public int ProductId { get; set; }
+        //public Product Product { get; set; }
     }
 }

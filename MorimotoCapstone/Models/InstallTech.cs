@@ -11,7 +11,7 @@ namespace MorimotoCapstone.Models
     public class InstallTech
     {
         [Key]
-        public int TechId { get; set; }
+        public int InstallTechId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 

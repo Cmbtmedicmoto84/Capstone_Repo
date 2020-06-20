@@ -15,16 +15,16 @@ namespace MorimotoCapstone.Models
         public string OrderNotes { get; set; }
         public bool IsComplete { get; set; }
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        //[ForeignKey("Product")]
+        //public int ProductId { get; set; }
+        //public Product Product { get; set; }
 
-        [ForeignKey("Customer")]
-        public int CustomerAccountId { get; set; }
-        public Customer Customer { get; set; }
+        //[ForeignKey("Customer")]
+        //public int CustomerAccountId { get; set; }
+        //public Customer Customer { get; set; }
 
-        [ForeignKey("InstallTech")]
-        public int TechId { get; set; }
-        public InstallTech InstallTech { get; set; }
+        //[ForeignKey("InstallTech")]
+        //public int TechId { get; set; }
+        //public InstallTech InstallTech { get; set; }
     }
 }

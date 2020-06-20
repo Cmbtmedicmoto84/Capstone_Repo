@@ -17,8 +17,8 @@ namespace MorimotoCapstone.Models
         public DateTime AppointmentDate { get; set; }
         public bool IsComplete { get; set; }
 
-        [ForeignKey("Customer")]
-        public int CustomerAccountId { get; set; }
-        public Customer Customer { get; set; }
+        //[ForeignKey("Customer")]
+        //public int CustomerAccountId { get; set; }
+        //public Customer Customer { get; set; }
     }
 }

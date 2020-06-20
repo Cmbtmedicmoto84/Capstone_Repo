@@ -1,55 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MorimotoCapstone.ActionFilters;
 using MorimotoCapstone.Data;
 using MorimotoCapstone.Models;
 
 namespace MorimotoCapstone.Controllers
 {
-    public class InstallTechesController : Controller
+    public class InstallTechsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        readonly ApplicationDbContext _context;
 
-        public InstallTechesController(ApplicationDbContext context)
+        public InstallTechsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: InstallTeches
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.InstallTechs.Include(i => i.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInInstallTech = _context.InstallTechs.Where(t => t.IdentityUserId == userId).SingleOrDefault();
+            if (loggedInInstallTech == null)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(loggedInInstallTech);
         }
 
         // GET: InstallTeches/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var installTech = await _context.InstallTechs
-                .Include(i => i.IdentityUser)
-                .FirstOrDefaultAsync(m => m.TechId == id);
-            if (installTech == null)
-            {
-                return NotFound();
-            }
-
-            return View(installTech);
+            var loggedInInstallTech = _context.InstallTechs.Include(t => t.IdentityUserId).SingleOrDefault(t => t.InstallTechId == id);
+            return View(loggedInInstallTech);
         }
 
         // GET: InstallTeches/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInInstallTech = _context.InstallTechs.Where(t => t.IdentityUserId == userId).SingleOrDefault();
+            InstallTech installTech = new InstallTech();
+            return View(loggedInInstallTech);
         }
 
         // POST: InstallTeches/Create
@@ -57,15 +57,16 @@ namespace MorimotoCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TechId,FirstName,LastName,IdentityUserId")] InstallTech installTech)
+        public IActionResult Create([Bind("InstallTechId,FirstName,LastName,IdentityUserId")] InstallTech installTech)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(installTech);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                installTech.IdentityUserId = userId;
+                _context.InstallTechs.Add(installTech);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", installTech.IdentityUserId);
             return View(installTech);
         }
 
@@ -93,7 +94,7 @@ namespace MorimotoCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TechId,FirstName,LastName,IdentityUserId")] InstallTech installTech)
         {
-            if (id != installTech.TechId)
+            if (id != installTech.InstallTechId)
             {
                 return NotFound();
             }
@@ -107,7 +108,7 @@ namespace MorimotoCapstone.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstallTechExists(installTech.TechId))
+                    if (!InstallTechExists(installTech.InstallTechId))
                     {
                         return NotFound();
                     }
@@ -132,7 +133,7 @@ namespace MorimotoCapstone.Controllers
 
             var installTech = await _context.InstallTechs
                 .Include(i => i.IdentityUser)
-                .FirstOrDefaultAsync(m => m.TechId == id);
+                .FirstOrDefaultAsync(m => m.InstallTechId == id);
             if (installTech == null)
             {
                 return NotFound();
@@ -154,7 +155,7 @@ namespace MorimotoCapstone.Controllers
 
         private bool InstallTechExists(int id)
         {
-            return _context.InstallTechs.Any(e => e.TechId == id);
+            return _context.InstallTechs.Any(e => e.InstallTechId == id);
         }
     }
 }

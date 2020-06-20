@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200619132439_commentedOutControllersForUnseededObjects")]
+    partial class commentedOutControllersForUnseededObjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "806ab74c-c920-4d11-8168-942c01ba3162",
-                            ConcurrencyStamp = "e670735f-8f62-44e5-b742-6143e9128a49",
+                            Id = "1f0dd1a0-0e87-4c62-8be1-229ea3e7e0af",
+                            ConcurrencyStamp = "e004f66a-ea69-4d9a-9748-7546ce8162be",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "94ec509f-4ada-4ccc-b569-14dadb63e062",
-                            ConcurrencyStamp = "a2792f6f-6957-43c9-85a0-2d752d2cf8d0",
+                            Id = "2b86246f-738d-46f1-9696-28b9ebcd2f48",
+                            ConcurrencyStamp = "bcf2dfbf-b35b-4daf-9011-f8b36ccbf440",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "65882cd6-7bf5-48ac-9eb6-f972ab70508b",
-                            ConcurrencyStamp = "59c171a4-8fbc-4dfb-886e-5065b00440cb",
+                            Id = "a783ce05-d970-4fe1-8345-20b8e80fb621",
+                            ConcurrencyStamp = "9ef5e5ba-a6df-4aba-b230-0f8e81f7f979",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -290,7 +292,7 @@ namespace MorimotoCapstone.Migrations
 
             modelBuilder.Entity("MorimotoCapstone.Models.CustomerServiceRep", b =>
                 {
-                    b.Property<int>("CustomerServiceRepId")
+                    b.Property<int>("CustomerServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -304,7 +306,7 @@ namespace MorimotoCapstone.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerServiceRepId");
+                    b.HasKey("CustomerServiceId");
 
                     b.HasIndex("IdentityUserId");
 
@@ -334,7 +336,7 @@ namespace MorimotoCapstone.Migrations
 
             modelBuilder.Entity("MorimotoCapstone.Models.InstallTech", b =>
                 {
-                    b.Property<int>("InstallTechId")
+                    b.Property<int>("TechId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -348,7 +350,7 @@ namespace MorimotoCapstone.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("InstallTechId");
+                    b.HasKey("TechId");
 
                     b.HasIndex("IdentityUserId");
 

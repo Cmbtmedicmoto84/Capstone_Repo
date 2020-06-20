@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MorimotoCapstone.Data;
 
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200619142710_editedCSRId")]
+    partial class editedCSRId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "806ab74c-c920-4d11-8168-942c01ba3162",
-                            ConcurrencyStamp = "e670735f-8f62-44e5-b742-6143e9128a49",
+                            Id = "290ee8ab-4609-413d-a99a-c224a1378c51",
+                            ConcurrencyStamp = "6215226f-04c0-4bce-98db-4274d6ae831c",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "94ec509f-4ada-4ccc-b569-14dadb63e062",
-                            ConcurrencyStamp = "a2792f6f-6957-43c9-85a0-2d752d2cf8d0",
+                            Id = "ce4a801a-a86f-4c7c-b3e3-fb5e9b3e1e67",
+                            ConcurrencyStamp = "2dae9b6d-80c7-4410-b73c-0dbabb91dbc3",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "65882cd6-7bf5-48ac-9eb6-f972ab70508b",
-                            ConcurrencyStamp = "59c171a4-8fbc-4dfb-886e-5065b00440cb",
+                            Id = "df8d5145-8de3-41c0-a13c-4c59141804bc",
+                            ConcurrencyStamp = "cfa7b8bc-05f9-4e8e-9769-cf55772488a2",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });

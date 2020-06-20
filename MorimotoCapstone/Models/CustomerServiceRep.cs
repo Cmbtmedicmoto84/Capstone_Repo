@@ -11,7 +11,7 @@ namespace MorimotoCapstone.Models
     public class CustomerServiceRep
     {
         [Key]
-        public int CustomerServiceId { get; set; }
+        public int CustomerServiceRepId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
