@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +13,7 @@ namespace MorimotoCapstone.Models
     public class Customer
     {
         [Key]
-        public int AccountNumber { get; set; }
+        public int CustomerAccountId { get; set; }
 
         [Required(ErrorMessage = "Enter First Name")]
         [Display(Name = "First Name")]
@@ -42,7 +44,7 @@ namespace MorimotoCapstone.Models
         public string ZipCode { get; set; }
 
         public string ServiceStatus { get; set; }
-        public double AccountBalance { get; set; }
+        public string AccountBalance { get; set; }
 
         //[ForeignKey("Product")] //subscribed product
         //public int ProductId { get; set; }

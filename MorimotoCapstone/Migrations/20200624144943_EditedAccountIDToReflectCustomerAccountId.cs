@@ -2,113 +2,113 @@
 
 namespace MorimotoCapstone.Migrations
 {
-    public partial class editedCSRId : Migration
+    public partial class EditedAccountIDToReflectCustomerAccountId : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropPrimaryKey(
-                name: "PK_CustomerServiceReps",
-                table: "CustomerServiceReps");
+                name: "PK_Customers",
+                table: "Customers");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "14b49076-264c-4da8-b769-80ce7242279c");
+                keyValue: "2a3e7516-7ca9-42c7-8ce3-6aeeb125c27e");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "9e9e5998-5f79-46ec-9260-a087fada2eb6");
+                keyValue: "c612f893-a042-43ee-b56c-e32960dfa2b4");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "e2daeacf-8040-4fd2-9e10-19f7536989cc");
+                keyValue: "c70d6278-5667-417a-b4aa-5c5c1ebe3539");
 
             migrationBuilder.DropColumn(
-                name: "CustomerServiceId",
-                table: "CustomerServiceReps");
+                name: "AccountNumber",
+                table: "Customers");
 
             migrationBuilder.AddColumn<int>(
-                name: "CustomerServiceRepId",
-                table: "CustomerServiceReps",
+                name: "CustomerAccountId",
+                table: "Customers",
                 nullable: false,
                 defaultValue: 0)
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_CustomerServiceReps",
-                table: "CustomerServiceReps",
-                column: "CustomerServiceRepId");
+                name: "PK_Customers",
+                table: "Customers",
+                column: "CustomerAccountId");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "290ee8ab-4609-413d-a99a-c224a1378c51", "6215226f-04c0-4bce-98db-4274d6ae831c", "Customer", "CUSTOMER" });
+                values: new object[] { "ca63b1af-ebcc-4b67-b412-68cec3d5655d", "4c9d2f07-a64a-46d6-819a-8746484463c5", "Customer", "CUSTOMER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ce4a801a-a86f-4c7c-b3e3-fb5e9b3e1e67", "2dae9b6d-80c7-4410-b73c-0dbabb91dbc3", "InstallTech", "INSTALLTECH" });
+                values: new object[] { "1067590b-d9df-4f5e-b43b-fd061e14bd57", "4a6c6f03-2b5a-4acb-b82f-11d91bbdcdae", "InstallTech", "INSTALLTECH" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "df8d5145-8de3-41c0-a13c-4c59141804bc", "cfa7b8bc-05f9-4e8e-9769-cf55772488a2", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
+                values: new object[] { "5199cadc-e7b2-45b7-ae99-7b0e93463846", "ffe68c4e-f5a7-4dcd-868d-ce208de3c182", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropPrimaryKey(
-                name: "PK_CustomerServiceReps",
-                table: "CustomerServiceReps");
+                name: "PK_Customers",
+                table: "Customers");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "290ee8ab-4609-413d-a99a-c224a1378c51");
+                keyValue: "1067590b-d9df-4f5e-b43b-fd061e14bd57");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "ce4a801a-a86f-4c7c-b3e3-fb5e9b3e1e67");
+                keyValue: "5199cadc-e7b2-45b7-ae99-7b0e93463846");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "df8d5145-8de3-41c0-a13c-4c59141804bc");
+                keyValue: "ca63b1af-ebcc-4b67-b412-68cec3d5655d");
 
             migrationBuilder.DropColumn(
-                name: "CustomerServiceRepId",
-                table: "CustomerServiceReps");
+                name: "CustomerAccountId",
+                table: "Customers");
 
             migrationBuilder.AddColumn<int>(
-                name: "CustomerServiceId",
-                table: "CustomerServiceReps",
+                name: "AccountNumber",
+                table: "Customers",
                 type: "int",
                 nullable: false,
                 defaultValue: 0)
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_CustomerServiceReps",
-                table: "CustomerServiceReps",
-                column: "CustomerServiceId");
+                name: "PK_Customers",
+                table: "Customers",
+                column: "AccountNumber");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "14b49076-264c-4da8-b769-80ce7242279c", "7d81af41-1cfe-4b9f-88fe-33f4ac7a2ba1", "Customer", "CUSTOMER" });
+                values: new object[] { "2a3e7516-7ca9-42c7-8ce3-6aeeb125c27e", "41cc4155-c79a-4903-b463-a96eb3db0916", "Customer", "CUSTOMER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "e2daeacf-8040-4fd2-9e10-19f7536989cc", "7df8a748-8b98-4db5-8287-1b5b5a032fca", "InstallTech", "INSTALLTECH" });
+                values: new object[] { "c612f893-a042-43ee-b56c-e32960dfa2b4", "296aa04b-c388-4a1b-90d5-6cc56306ae84", "InstallTech", "INSTALLTECH" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9e9e5998-5f79-46ec-9260-a087fada2eb6", "02f13fa3-c59f-499d-a0d7-127406aea696", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
+                values: new object[] { "c70d6278-5667-417a-b4aa-5c5c1ebe3539", "55e15aec-f0ed-43f8-abe4-b6b2a0c7dba4", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
         }
     }
 }

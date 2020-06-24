@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MorimotoCapstone.ActionFilters;
 using MorimotoCapstone.Data;
 using MorimotoCapstone.Models;
 
@@ -13,7 +17,7 @@ namespace MorimotoCapstone.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        readonly ApplicationDbContext _context;
 
         public CustomersController(ApplicationDbContext context)
         {
@@ -37,17 +41,15 @@ namespace MorimotoCapstone.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInCustomer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
-            
             if (loggedInCustomer == null)
             {
                 return RedirectToAction("Index");
             }
-
             return View(loggedInCustomer);
         }
 
         // GET: Customers/Create
-        [HttpPost]
+        [HttpGet]
         public IActionResult Create()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -98,7 +100,7 @@ namespace MorimotoCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CustomerAccountId,FirstName,LastName,AddressLineOne,AddressLineTwo,City,State,ZipCode,ServiceStatus,AccountBalance,IdentityUserId,ProductId")] Customer customer)
         {
-            if (id != customer.AccountNumber)
+            if (id != customer.CustomerAccountId)
             {
                 return NotFound();
             }
@@ -112,7 +114,7 @@ namespace MorimotoCapstone.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.AccountNumber))
+                    if (!CustomerExists(customer.CustomerAccountId))
                     {
                         return NotFound();
                     }
@@ -136,7 +138,7 @@ namespace MorimotoCapstone.Controllers
 
             var customer = await _context.Customers
                 .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.AccountNumber == id);
+                .FirstOrDefaultAsync(m => m.CustomerAccountId == id);
             if (customer == null)
             {
                 return NotFound();
@@ -158,7 +160,7 @@ namespace MorimotoCapstone.Controllers
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.AccountNumber == id);
+            return _context.Customers.Any(e => e.CustomerAccountId == id);
         }
     }
 }

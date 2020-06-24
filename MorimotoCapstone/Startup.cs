@@ -45,6 +45,8 @@ namespace MorimotoCapstone
                 config.Filters.Add(typeof(GlobalRouting));
             });
 
+            services.AddMvc();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -66,6 +68,7 @@ namespace MorimotoCapstone
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
 
             app.UseRouting();
 

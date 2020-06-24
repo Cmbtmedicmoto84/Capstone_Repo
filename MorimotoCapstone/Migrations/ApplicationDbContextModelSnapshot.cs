@@ -48,22 +48,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "806ab74c-c920-4d11-8168-942c01ba3162",
-                            ConcurrencyStamp = "e670735f-8f62-44e5-b742-6143e9128a49",
+                            Id = "ca63b1af-ebcc-4b67-b412-68cec3d5655d",
+                            ConcurrencyStamp = "4c9d2f07-a64a-46d6-819a-8746484463c5",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "94ec509f-4ada-4ccc-b569-14dadb63e062",
-                            ConcurrencyStamp = "a2792f6f-6957-43c9-85a0-2d752d2cf8d0",
+                            Id = "1067590b-d9df-4f5e-b43b-fd061e14bd57",
+                            ConcurrencyStamp = "4a6c6f03-2b5a-4acb-b82f-11d91bbdcdae",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "65882cd6-7bf5-48ac-9eb6-f972ab70508b",
-                            ConcurrencyStamp = "59c171a4-8fbc-4dfb-886e-5065b00440cb",
+                            Id = "5199cadc-e7b2-45b7-ae99-7b0e93463846",
+                            ConcurrencyStamp = "ffe68c4e-f5a7-4dcd-868d-ce208de3c182",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -240,13 +240,13 @@ namespace MorimotoCapstone.Migrations
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
                 {
-                    b.Property<int>("AccountNumber")
+                    b.Property<int>("CustomerAccountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AccountBalance")
-                        .HasColumnType("float");
+                    b.Property<string>("AccountBalance")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLineOne")
                         .IsRequired()
@@ -281,7 +281,7 @@ namespace MorimotoCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber");
+                    b.HasKey("CustomerAccountId");
 
                     b.HasIndex("IdentityUserId");
 

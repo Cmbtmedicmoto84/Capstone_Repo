@@ -1,12 +1,16 @@
 {
   "dependencies": {
     "mssql1": {
+      "resourceId": null,
       "type": "mssql.local",
-      "connectionId": "DefaultConnection"
+      "connectionId": "DefaultConnection",
+      "secretStore": null
     },
     "mssql2": {
+      "resourceId": null,
       "type": "mssql.local",
-      "connectionId": "MorimotoCapstoneContext"
+      "connectionId": "sqlConnection",
+      "secretStore": "LocalSecretsFile"
     }
   }
 }

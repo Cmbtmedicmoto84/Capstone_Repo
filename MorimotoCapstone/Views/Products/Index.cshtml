@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MorimotoCapstone.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width-device-width" />
+    <title>Products</title>
+    <style>
+        .tableDesign {
+            border: 2px solid White;
+            
+            padding-left: inherit;
+            padding-right: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <table>
+            <thead class="tableDesign">Id</thead>
+            <thead class="tableDesign">Product</thead>
+            <thead class="tableDesign">Price</thead>
+            <thead class="tableDesign">Description</thead>
+
+            @foreach (var product in @Model)
+            {
+                <tr class="tableDesign">
+                    <td class="tableDesign">@product.ProductId</td>
+                    <td class="tableDesign">@product.ProductName</td>
+                    <td class="tableDesign">@product.ProductPrice</td>
+                    <td class="tableDesign">@product.ProductDescription</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

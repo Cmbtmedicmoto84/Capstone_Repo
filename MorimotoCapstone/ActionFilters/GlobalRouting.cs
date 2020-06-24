@@ -10,7 +10,7 @@ namespace MorimotoCapstone.ActionFilters
 {
     public class GlobalRouting : IActionFilter
     {
-        readonly ClaimsPrincipal _claimsPrincipal;
+        private readonly ClaimsPrincipal _claimsPrincipal;
         public GlobalRouting(ClaimsPrincipal claimsPrincipal)
         {
             _claimsPrincipal = claimsPrincipal;

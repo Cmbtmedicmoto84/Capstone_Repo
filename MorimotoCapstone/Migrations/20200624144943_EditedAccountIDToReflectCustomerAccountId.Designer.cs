@@ -10,8 +10,8 @@ using MorimotoCapstone.Data;
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200619160213_fixedInstallTechesDboName")]
-    partial class fixedInstallTechesDboName
+    [Migration("20200624144943_EditedAccountIDToReflectCustomerAccountId")]
+    partial class EditedAccountIDToReflectCustomerAccountId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aba53c67-9a5f-426d-8fcb-9a78fde0dba9",
-                            ConcurrencyStamp = "23821416-7b9c-4fdb-832e-608fc54bfb0d",
+                            Id = "ca63b1af-ebcc-4b67-b412-68cec3d5655d",
+                            ConcurrencyStamp = "4c9d2f07-a64a-46d6-819a-8746484463c5",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "c215eacd-d4ac-450d-a680-ccb753272d63",
-                            ConcurrencyStamp = "432f1085-44bb-493a-b5a6-a1e960a56118",
+                            Id = "1067590b-d9df-4f5e-b43b-fd061e14bd57",
+                            ConcurrencyStamp = "4a6c6f03-2b5a-4acb-b82f-11d91bbdcdae",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "5ca5c933-8787-4b1b-b51c-3a359da90ae1",
-                            ConcurrencyStamp = "1b7de1f3-6072-4dc1-97da-fa1faac26fd4",
+                            Id = "5199cadc-e7b2-45b7-ae99-7b0e93463846",
+                            ConcurrencyStamp = "ffe68c4e-f5a7-4dcd-868d-ce208de3c182",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -242,13 +242,13 @@ namespace MorimotoCapstone.Migrations
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
                 {
-                    b.Property<int>("AccountNumber")
+                    b.Property<int>("CustomerAccountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AccountBalance")
-                        .HasColumnType("float");
+                    b.Property<string>("AccountBalance")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLineOne")
                         .IsRequired()
@@ -283,7 +283,7 @@ namespace MorimotoCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AccountNumber");
+                    b.HasKey("CustomerAccountId");
 
                     b.HasIndex("IdentityUserId");
 
@@ -354,7 +354,7 @@ namespace MorimotoCapstone.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("InstallTeches");
+                    b.ToTable("InstallTechs");
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.Product", b =>

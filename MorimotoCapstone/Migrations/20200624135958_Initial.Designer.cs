@@ -10,8 +10,8 @@ using MorimotoCapstone.Data;
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200620145112_updatedDbPermissions")]
-    partial class updatedDbPermissions
+    [Migration("20200624135958_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "806ab74c-c920-4d11-8168-942c01ba3162",
-                            ConcurrencyStamp = "e670735f-8f62-44e5-b742-6143e9128a49",
+                            Id = "2a3e7516-7ca9-42c7-8ce3-6aeeb125c27e",
+                            ConcurrencyStamp = "41cc4155-c79a-4903-b463-a96eb3db0916",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "94ec509f-4ada-4ccc-b569-14dadb63e062",
-                            ConcurrencyStamp = "a2792f6f-6957-43c9-85a0-2d752d2cf8d0",
+                            Id = "c612f893-a042-43ee-b56c-e32960dfa2b4",
+                            ConcurrencyStamp = "296aa04b-c388-4a1b-90d5-6cc56306ae84",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "65882cd6-7bf5-48ac-9eb6-f972ab70508b",
-                            ConcurrencyStamp = "59c171a4-8fbc-4dfb-886e-5065b00440cb",
+                            Id = "c70d6278-5667-417a-b4aa-5c5c1ebe3539",
+                            ConcurrencyStamp = "55e15aec-f0ed-43f8-abe4-b6b2a0c7dba4",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -247,8 +247,8 @@ namespace MorimotoCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AccountBalance")
-                        .HasColumnType("float");
+                    b.Property<string>("AccountBalance")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLineOne")
                         .IsRequired()

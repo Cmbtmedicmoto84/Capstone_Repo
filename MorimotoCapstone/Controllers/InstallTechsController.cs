@@ -23,7 +23,7 @@ namespace MorimotoCapstone.Controllers
             _context = context;
         }
 
-        // GET: InstallTeches
+        // GET: InstallTechs
         public IActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -35,14 +35,14 @@ namespace MorimotoCapstone.Controllers
             return View(loggedInInstallTech);
         }
 
-        // GET: InstallTeches/Details/5
+        // GET: InstallTechs/Details/5
         public IActionResult Details(int id)
         {
             var loggedInInstallTech = _context.InstallTechs.Include(t => t.IdentityUserId).SingleOrDefault(t => t.InstallTechId == id);
             return View(loggedInInstallTech);
         }
 
-        // GET: InstallTeches/Create
+        // GET: InstallTechs/Create
         [HttpGet]
         public IActionResult Create()
         {
@@ -52,7 +52,7 @@ namespace MorimotoCapstone.Controllers
             return View(loggedInInstallTech);
         }
 
-        // POST: InstallTeches/Create
+        // POST: InstallTechs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -70,7 +70,7 @@ namespace MorimotoCapstone.Controllers
             return View(installTech);
         }
 
-        // GET: InstallTeches/Edit/5
+        // GET: InstallTechs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,7 +87,7 @@ namespace MorimotoCapstone.Controllers
             return View(installTech);
         }
 
-        // POST: InstallTeches/Edit/5
+        // POST: InstallTechs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -123,7 +123,7 @@ namespace MorimotoCapstone.Controllers
             return View(installTech);
         }
 
-        // GET: InstallTeches/Delete/5
+        // GET: InstallTechs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

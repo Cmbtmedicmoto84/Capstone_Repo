@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MorimotoCapstone.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,21 @@ namespace MorimotoCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HelpSupportTickets",
+                columns: table => new
+                {
+                    TicketId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerName = table.Column<string>(nullable: true),
+                    CustomerComments = table.Column<string>(nullable: true),
+                    IsResolved = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HelpSupportTickets", x => x.TicketId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -59,6 +74,38 @@ namespace MorimotoCapstone.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.ProductId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceAppointments",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerAddress = table.Column<string>(nullable: true),
+                    AppointmentNotes = table.Column<string>(nullable: true),
+                    AppointmentTime = table.Column<DateTime>(nullable: false),
+                    AppointmentDate = table.Column<DateTime>(nullable: false),
+                    IsComplete = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceAppointments", x => x.AppointmentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceInstallOrders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ServiceOrderStatus = table.Column<string>(nullable: true),
+                    OrderNotes = table.Column<string>(nullable: true),
+                    IsComplete = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceInstallOrders", x => x.OrderId);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,52 +215,10 @@ namespace MorimotoCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerServiceReps",
-                columns: table => new
-                {
-                    CustomerServiceId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    IdentityUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerServiceReps", x => x.CustomerServiceId);
-                    table.ForeignKey(
-                        name: "FK_CustomerServiceReps_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InstallTechs",
-                columns: table => new
-                {
-                    TechId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    IdentityUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InstallTechs", x => x.TechId);
-                    table.ForeignKey(
-                        name: "FK_InstallTechs_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerAccountId = table.Column<int>(nullable: false)
+                    AccountNumber = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
@@ -223,130 +228,81 @@ namespace MorimotoCapstone.Migrations
                     State = table.Column<string>(nullable: false),
                     ZipCode = table.Column<string>(nullable: false),
                     ServiceStatus = table.Column<string>(nullable: true),
-                    AccountBalance = table.Column<double>(nullable: false),
-                    IdentityUserId = table.Column<string>(nullable: true),
-                    ProductId = table.Column<int>(nullable: false)
+                    AccountBalance = table.Column<string>(nullable: true),
+                    IdentityUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerAccountId);
+                    table.PrimaryKey("PK_Customers", x => x.AccountNumber);
                     table.ForeignKey(
                         name: "FK_Customers_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Customers_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
-                name: "HelpSupportTickets",
+                name: "CustomerServiceReps",
                 columns: table => new
                 {
-                    TicketId = table.Column<int>(nullable: false)
+                    CustomerServiceRepId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerName = table.Column<string>(nullable: true),
-                    CustomerComments = table.Column<string>(nullable: true),
-                    IsResolved = table.Column<bool>(nullable: false),
-                    CustomerAccountId = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false)
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    IdentityUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HelpSupportTickets", x => x.TicketId);
+                    table.PrimaryKey("PK_CustomerServiceReps", x => x.CustomerServiceRepId);
                     table.ForeignKey(
-                        name: "FK_HelpSupportTickets_Customers_CustomerAccountId",
-                        column: x => x.CustomerAccountId,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerAccountId",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_HelpSupportTickets_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.NoAction);
+                        name: "FK_CustomerServiceReps_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ServiceAppointments",
+                name: "InstallTechs",
                 columns: table => new
                 {
-                    AppointmentId = table.Column<int>(nullable: false)
+                    InstallTechId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerAddress = table.Column<string>(nullable: true),
-                    AppointmentNotes = table.Column<string>(nullable: true),
-                    AppointmentTime = table.Column<DateTime>(nullable: false),
-                    AppointmentDate = table.Column<DateTime>(nullable: false),
-                    IsComplete = table.Column<bool>(nullable: false),
-                    CustomerAccountId = table.Column<int>(nullable: false)
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    IdentityUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceAppointments", x => x.AppointmentId);
+                    table.PrimaryKey("PK_InstallTechs", x => x.InstallTechId);
                     table.ForeignKey(
-                        name: "FK_ServiceAppointments_Customers_CustomerAccountId",
-                        column: x => x.CustomerAccountId,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerAccountId",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServiceInstallOrders",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ServiceOrderStatus = table.Column<string>(nullable: true),
-                    OrderNotes = table.Column<string>(nullable: true),
-                    IsComplete = table.Column<bool>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
-                    CustomerAccountId = table.Column<int>(nullable: false),
-                    TechId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServiceInstallOrders", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_ServiceInstallOrders_Customers_CustomerAccountId",
-                        column: x => x.CustomerAccountId,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerAccountId",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_ServiceInstallOrders_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_ServiceInstallOrders_InstallTechs_TechId",
-                        column: x => x.TechId,
-                        principalTable: "InstallTechs",
-                        principalColumn: "TechId",
-                        onDelete: ReferentialAction.NoAction);
+                        name: "FK_InstallTechs_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c39b5b43-7c85-49d4-8b67-5f9a49d25ac9", "60a4e7be-7ef0-41f0-b06a-da88cac1de33", "Customer", "CUSTOMER" });
+                values: new object[,]
+                {
+                    { "2a3e7516-7ca9-42c7-8ce3-6aeeb125c27e", "41cc4155-c79a-4903-b463-a96eb3db0916", "Customer", "CUSTOMER" },
+                    { "c612f893-a042-43ee-b56c-e32960dfa2b4", "296aa04b-c388-4a1b-90d5-6cc56306ae84", "InstallTech", "INSTALLTECH" },
+                    { "c70d6278-5667-417a-b4aa-5c5c1ebe3539", "55e15aec-f0ed-43f8-abe4-b6b2a0c7dba4", "CustomerServiceRep", "CUSTOMERSERVICEREP" }
+                });
 
             migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "85ec2dc9-fe64-420b-9793-dcae796f909f", "febe0dfe-7e36-4c23-9cba-f07bfce58900", "InstallTech", "INSTALLTECH" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9dd284b6-c773-44f0-9937-25869ff5ea8a", "25a04ab9-6cee-41d1-a54d-3781f206e649", "CustomerServiceRep", "CUSTOMERSERVICEREP" });
+                table: "Products",
+                columns: new[] { "ProductId", "ProductDescription", "ProductName", "ProductPrice" },
+                values: new object[,]
+                {
+                    { 12, "Our fastest Internet with syncronous Up/Down speeds of 1 Gig!!", "Ultra-Fast Internet", 59.990000000000002 },
+                    { 22, "Fast internet with Up/Down speeds of 300Mbps!", "Fast Internet", 39.990000000000002 },
+                    { 32, "Basic fiber internet speeds of up to 100Mbps!", "Standard Internet", 24.989999999999998 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -393,49 +349,14 @@ namespace MorimotoCapstone.Migrations
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_ProductId",
-                table: "Customers",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CustomerServiceReps_IdentityUserId",
                 table: "CustomerServiceReps",
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HelpSupportTickets_CustomerAccountId",
-                table: "HelpSupportTickets",
-                column: "CustomerAccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HelpSupportTickets_ProductId",
-                table: "HelpSupportTickets",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_InstallTechs_IdentityUserId",
                 table: "InstallTechs",
                 column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceAppointments_CustomerAccountId",
-                table: "ServiceAppointments",
-                column: "CustomerAccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceInstallOrders_CustomerAccountId",
-                table: "ServiceInstallOrders",
-                column: "CustomerAccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceInstallOrders_ProductId",
-                table: "ServiceInstallOrders",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceInstallOrders_TechId",
-                table: "ServiceInstallOrders",
-                column: "TechId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -456,10 +377,19 @@ namespace MorimotoCapstone.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
                 name: "CustomerServiceReps");
 
             migrationBuilder.DropTable(
                 name: "HelpSupportTickets");
+
+            migrationBuilder.DropTable(
+                name: "InstallTechs");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "ServiceAppointments");
@@ -469,15 +399,6 @@ namespace MorimotoCapstone.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "InstallTechs");
-
-            migrationBuilder.DropTable(
-                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
