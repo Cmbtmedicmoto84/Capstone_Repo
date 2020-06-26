@@ -50,9 +50,10 @@ namespace MorimotoCapstone.Models
         //public int ProductId { get; set; }
         //public Product Product { get; set; }
 
+        //public IEnumerable<Product> Products { get; set; }
+
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
-        public IdentityUser IdentityUser { get; set; }
-
+        public IdentityUser IdentityUser { get; set; }     
     }
 }

@@ -15,6 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using MorimotoCapstone.ActionFilters;
+using MorimotoCapstone.Models;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace MorimotoCapstone
 {
@@ -26,6 +29,7 @@ namespace MorimotoCapstone
         }
 
         public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -45,7 +49,12 @@ namespace MorimotoCapstone
                 config.Filters.Add(typeof(GlobalRouting));
             });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddScoped(sp => Cart.GetCart(sp));
+
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -68,12 +77,15 @@ namespace MorimotoCapstone
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
-
+            //app.UseHangfireDashboard("/jobs");
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -83,5 +95,6 @@ namespace MorimotoCapstone
                 endpoints.MapRazorPages();
             });
         }
+
     }
 }

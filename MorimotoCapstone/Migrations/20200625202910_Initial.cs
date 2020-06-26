@@ -99,9 +99,18 @@ namespace MorimotoCapstone.Migrations
                 {
                     OrderId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServiceOrderStatus = table.Column<string>(nullable: true),
-                    OrderNotes = table.Column<string>(nullable: true),
-                    IsComplete = table.Column<bool>(nullable: false)
+                    Username = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    AddressLineOne = table.Column<string>(nullable: true),
+                    AddressLineTwo = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Total = table.Column<double>(nullable: false),
+                    OrderDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +227,7 @@ namespace MorimotoCapstone.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    AccountNumber = table.Column<int>(nullable: false)
+                    CustomerAccountId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
@@ -233,7 +242,7 @@ namespace MorimotoCapstone.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.AccountNumber);
+                    table.PrimaryKey("PK_Customers", x => x.CustomerAccountId);
                     table.ForeignKey(
                         name: "FK_Customers_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
@@ -284,14 +293,66 @@ namespace MorimotoCapstone.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartId = table.Column<string>(nullable: true),
+                    Count = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    CartTotal = table.Column<double>(nullable: false),
+                    ProductId1 = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_Carts_Products_ProductId1",
+                        column: x => x.ProductId1,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceOrderDetails",
+                columns: table => new
+                {
+                    OrderDetailId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    ProductPrice = table.Column<double>(nullable: false),
+                    ServiceInstallOrderOrderId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceOrderDetails", x => x.OrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_ServiceOrderDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServiceOrderDetails_ServiceInstallOrders_ServiceInstallOrderOrderId",
+                        column: x => x.ServiceInstallOrderOrderId,
+                        principalTable: "ServiceInstallOrders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2a3e7516-7ca9-42c7-8ce3-6aeeb125c27e", "41cc4155-c79a-4903-b463-a96eb3db0916", "Customer", "CUSTOMER" },
-                    { "c612f893-a042-43ee-b56c-e32960dfa2b4", "296aa04b-c388-4a1b-90d5-6cc56306ae84", "InstallTech", "INSTALLTECH" },
-                    { "c70d6278-5667-417a-b4aa-5c5c1ebe3539", "55e15aec-f0ed-43f8-abe4-b6b2a0c7dba4", "CustomerServiceRep", "CUSTOMERSERVICEREP" }
+                    { "b8950213-558a-4ea0-ae08-eb272a99bb34", "9a9a618d-ac9b-4bf4-ae0c-9c7dcdd3d478", "Customer", "CUSTOMER" },
+                    { "babddecf-a9c7-4fd8-88cb-80fc36f02f17", "9cfc3079-056e-44da-951e-89904ce5325d", "InstallTech", "INSTALLTECH" },
+                    { "acfb747d-b5f5-46ca-9fc0-7bec25ad7254", "03cd9209-1d31-4802-88f8-de378970010b", "CustomerServiceRep", "CUSTOMERSERVICEREP" }
                 });
 
             migrationBuilder.InsertData(
@@ -299,7 +360,7 @@ namespace MorimotoCapstone.Migrations
                 columns: new[] { "ProductId", "ProductDescription", "ProductName", "ProductPrice" },
                 values: new object[,]
                 {
-                    { 12, "Our fastest Internet with syncronous Up/Down speeds of 1 Gig!!", "Ultra-Fast Internet", 59.990000000000002 },
+                    { 12, "Our fastest Internet with syncronous Up/Down speeds of 1 Gig!!", "Ultra-Fast Internet", 29.989999999999998 },
                     { 22, "Fast internet with Up/Down speeds of 300Mbps!", "Fast Internet", 39.990000000000002 },
                     { 32, "Basic fiber internet speeds of up to 100Mbps!", "Standard Internet", 24.989999999999998 }
                 });
@@ -344,6 +405,11 @@ namespace MorimotoCapstone.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carts_ProductId1",
+                table: "Carts",
+                column: "ProductId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customers_IdentityUserId",
                 table: "Customers",
                 column: "IdentityUserId");
@@ -357,6 +423,16 @@ namespace MorimotoCapstone.Migrations
                 name: "IX_InstallTechs_IdentityUserId",
                 table: "InstallTechs",
                 column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceOrderDetails_ProductId",
+                table: "ServiceOrderDetails",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceOrderDetails_ServiceInstallOrderOrderId",
+                table: "ServiceOrderDetails",
+                column: "ServiceInstallOrderOrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -377,6 +453,9 @@ namespace MorimotoCapstone.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Carts");
+
+            migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
@@ -389,19 +468,22 @@ namespace MorimotoCapstone.Migrations
                 name: "InstallTechs");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "ServiceAppointments");
 
             migrationBuilder.DropTable(
-                name: "ServiceInstallOrders");
+                name: "ServiceOrderDetails");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "ServiceInstallOrders");
         }
     }
 }

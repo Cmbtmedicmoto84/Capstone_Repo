@@ -20,5 +20,7 @@ namespace MorimotoCapstone.Models
         //[ForeignKey("Customer")]
         //public int CustomerAccountId { get; set; }
         //public Customer Customer { get; set; }
+
+        //public IEnumerable<Customer> Customers { get; set; }
     }
 }

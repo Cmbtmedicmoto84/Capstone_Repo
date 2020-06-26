@@ -27,16 +27,17 @@ namespace MorimotoCapstone.Controllers
             return View(productList);
         }
 
-        //// GET: ProductsController/Details/5
-        //public IActionResult Details()
-        //{
-        //    var productId = this.
-        //    return View();
-        //}
+        // GET: ProductsController/Details/5
+        public IActionResult Details(int prodId)
+        {
+            var productId = _context.Products.Where(p => p.ProductId == prodId).SingleOrDefault();
+            return View(productId);
+        }
 
         //// GET: ProductsController/Create
         //public ActionResult Create()
         //{
+        //    ViewBag.Product = new Product products(_context.Products, "ProductId", "ProductName", "ProductPrice", "ProductDescription");
         //    return View();
         //}
 
