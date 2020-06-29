@@ -1,7 +1,8 @@
-﻿@model IEnumerable<MorimotoCapstone.Models.Product>
+﻿@model IEnumerable<MorimotoCapstone.Models.ShoppingCart>
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -19,7 +20,7 @@
                 @Html.DisplayNameFor(model => model.ProductPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductDescription)
+                @Html.DisplayNameFor(model => model.CartTotal)
             </th>
             <th></th>
         </tr>
@@ -34,10 +35,12 @@
                 @Html.DisplayFor(modelItem => item.ProductPrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductDescription)
+                @Html.DisplayFor(modelItem => item.CartTotal)
             </td>
             <td>
-                <a asp-action="addToCart" asp-route-id="@item.ProductId">Add To Cart</a>
+                <a asp-action="Edit" asp-route-id="@item.CartId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CartId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CartId">Delete</a>
             </td>
         </tr>
 }
