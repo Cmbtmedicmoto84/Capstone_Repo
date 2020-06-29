@@ -1,153 +1,99 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MorimotoCapstone.Data;
+using MorimotoCapstone.Helpers;
 using MorimotoCapstone.Models;
 
 namespace MorimotoCapstone.Controllers
 {
     public class ShoppingCartsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
 
-        public ShoppingCartsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        //public ShoppingCartsController(ApplicationDbContext context)
+        //{
+        //    _context = context;
+        //}
 
         // GET: ShoppingCarts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.ShoppingCarts.ToListAsync());
-        }
-
-        // GET: ShoppingCarts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shoppingCart = await _context.ShoppingCarts
-                .FirstOrDefaultAsync(m => m.CartId == id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
-
-            return View(shoppingCart);
-        }
-
-        // GET: ShoppingCarts/Create
-        public IActionResult Create()
-        {
+            var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "shoppingCart");
+            ViewBag.cart = cart;
+            ViewBag.total = cart.Sum(item => item.ProductPrice * item.Quantity);
             return View();
         }
 
-        // POST: ShoppingCarts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CartId,ProductName,ProductPrice,CartTotal")] ShoppingCart shoppingCart)
+        // GET: ShoppingCarts/Details/5
+        public IActionResult Buy(int id)
         {
-            if (ModelState.IsValid)
+            Product product = new Product();
+            if(SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
             {
-                _context.Add(shoppingCart);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                List<Item> cart = new List<Item>();
+                cart.Add(new Item { Product = product.find(id), Quantity = 1 });
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
-            return View(shoppingCart);
-        }
-
-        // GET: ShoppingCarts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
-            }
-
-            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
-            return View(shoppingCart);
-        }
-
-        // POST: ShoppingCarts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartId,ProductName,ProductPrice,CartTotal")] ShoppingCart shoppingCart)
-        {
-            if (id != shoppingCart.CartId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+                int index = isExist(id);
+                if (index != 1)
                 {
-                    _context.Update(shoppingCart);
-                    await _context.SaveChangesAsync();
+                    cart[index].Quantity++;
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ShoppingCartExists(shoppingCart.CartId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    cart.Add(new Item { Product = product.find(id), Quantity = 1 });
                 }
-                return RedirectToAction(nameof(Index));
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
-            return View(shoppingCart);
+            return RedirectToAction("Index");
         }
 
-        // GET: ShoppingCarts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        //public IActionResult Remove(int id)
+        //{
+        //    List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+        //    for (int i = 0; i < cart.Count; i++)
+        //    {
+        //        if (cart[i].Product.Id.Equals(id))
+        //        {
+        //            return i;
+        //        }
+        //    }
+        //    return -1;
+        //}
+
+        private int isExist(int id)
         {
-            if (id == null)
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            for (int i = 0; i < cart.Count; i++)
             {
-                return NotFound();
+                if (cart[i].Product.Equals(id))
+                {
+                    return i;
+                }
             }
-
-            var shoppingCart = await _context.ShoppingCarts
-                .FirstOrDefaultAsync(m => m.CartId == id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
-
-            return View(shoppingCart);
+            return -1;
         }
+        //private bool ShoppingCartExists(int id)
+        //{
+        //    return _context.ShoppingCarts.Any(e => e.CartId == id);
+        //}
 
-        // POST: ShoppingCarts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        private class Item
         {
-            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
-            _context.ShoppingCarts.Remove(shoppingCart);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            public object Product { get; set; }
+            public int Quantity { get; set; }
+            public decimal ProductPrice { get; set; }
 
-        private bool ShoppingCartExists(int id)
-        {
-            return _context.ShoppingCarts.Any(e => e.CartId == id);
         }
     }
 }

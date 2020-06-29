@@ -32,14 +32,16 @@ namespace MorimotoCapstone.Controllers
             {
                 return RedirectToAction("Create");
             }
-            return View(loggedInInstallTech);
+            var appointment = _context.ServiceAppointments.ToList();
+            return View(appointment);
         }
 
         // GET: InstallTechs/Details/5
-        public IActionResult Details(int id)
+        public ActionResult Detail(int id)
         {
-            var loggedInInstallTech = _context.InstallTechs.Include(t => t.IdentityUserId).SingleOrDefault(t => t.InstallTechId == id);
-            return View(loggedInInstallTech);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appointment = _context.ServiceAppointments.Where(c => c.AppointmentId == id).FirstOrDefault();
+            return View("Detail");
         }
 
         // GET: InstallTechs/Create

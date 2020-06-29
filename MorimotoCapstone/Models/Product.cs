@@ -10,10 +10,19 @@ namespace MorimotoCapstone.Models
     {
         [Key]
         public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public double ProductPrice { get; set; }
-        public string ProductDescription { get; set; }
-        
 
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+
+        [Display(Name = "Product Price")]
+        public double ProductPrice { get; set; }
+
+        [Display(Name = "Product Description")]
+        public string ProductDescription { get; set; }
+
+        internal object find(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

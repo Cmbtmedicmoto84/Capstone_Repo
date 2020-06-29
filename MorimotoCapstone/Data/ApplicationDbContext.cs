@@ -69,6 +69,7 @@ namespace MorimotoCapstone.Data
                 );
         }
 
+
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<HelpSupportTicket> HelpSupportTickets { get; set; }

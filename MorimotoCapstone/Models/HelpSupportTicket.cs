@@ -11,8 +11,18 @@ namespace MorimotoCapstone.Models
     {
         [Key]
         public int TicketId { get; set; }
+
+        [Required(ErrorMessage = "Customer name is required.")]
+        [Display(Name = "Customer Name")]
         public string CustomerName { get; set; }
+
+        [Display(Name = "Contact Email")]
+        public string ContactEmail { get; set; }
+
+        [Display(Name = "What can we help you with today?")]
         public string CustomerComments { get; set; }
+
+
         public bool IsResolved { get; set; }
 
         //[ForeignKey("Customer")]

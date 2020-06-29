@@ -28,7 +28,7 @@ namespace MorimotoCapstone.Controllers
         public ActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var loggedInCustomer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            var loggedInCustomer = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             if(loggedInCustomer == null)
             {
                 return RedirectToAction("Create");
@@ -43,7 +43,7 @@ namespace MorimotoCapstone.Controllers
             var loggedInCustomer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
             if (loggedInCustomer == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Details");
             }
             return View(loggedInCustomer);
         }

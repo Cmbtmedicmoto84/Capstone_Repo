@@ -4,11 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Fiber Internet Options</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -37,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.ProductDescription)
             </td>
             <td>
-                <a asp-action="addToCart" asp-route-id="@item.ProductId">Add To Cart</a>
+                <a href="@Url.Action("Index", "ShoppingCarts")">Add To Cart</a>
             </td>
         </tr>
 }

@@ -48,22 +48,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7b8d936b-61c4-4b8f-a4f2-ca3103a32802",
-                            ConcurrencyStamp = "079706c3-6f63-47ef-9369-97a38efc362c",
+                            Id = "4a863962-a5f2-4c86-9de1-4369758ecbdb",
+                            ConcurrencyStamp = "4fafe61d-5592-41a5-b58e-06e1fc8c8876",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "19b30fb5-c392-4063-bf91-61d4fa28fd18",
-                            ConcurrencyStamp = "42d3bf75-bdf1-4b5e-832b-873703181b62",
+                            Id = "e7d73cbb-6540-401d-8525-84ca4bb8ed62",
+                            ConcurrencyStamp = "e93269cf-85b2-401b-a66d-da2c38aab14f",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "f55041eb-2ede-4585-a99e-88a1ecabf5c2",
-                            ConcurrencyStamp = "38ee02b2-a950-46ed-ad7e-ea5851b1494c",
+                            Id = "1a2043fe-0998-4e54-a31e-fc5ce4b8a760",
+                            ConcurrencyStamp = "097f079b-2300-4d14-9f5f-0ebec280cee9",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -357,10 +357,14 @@ namespace MorimotoCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ContactEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CustomerComments")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsResolved")
