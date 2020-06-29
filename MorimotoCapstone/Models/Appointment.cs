@@ -9,22 +9,20 @@ namespace MorimotoCapstone.Models
 {
     public class Appointment
     {
-        public static int ReminderTime = 30;
+        [Key]
         public int Id { get; set; }
+        [Required]
+        public int OrderDetailId { get; set; }
+        [Required]
+        public int OrderId { get; set; }
 
         [Required]
-        public string Name { get; set; }
-        
-        [Required, Phone, Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
-
+        public DateTime AppointmentTime { get; set; }
         [Required]
-        public DateTime Time { get; set; }
+        public DateTime AppointmentDate { get; set; }
 
-        [Required]
-        public string Timezone { get; set; }
-
-        [Display(Name = "Created at")]
-        public DateTime CreatedAt { get; set; }
+        public Customer Customer { get; set; }
+        public ServiceOrderDetail ServiceOrderDetail { get; set; }
+        public ServiceInstallOrder ServiceInstallOrder { get; set; }
     }
 }

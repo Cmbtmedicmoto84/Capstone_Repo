@@ -10,8 +10,8 @@ using MorimotoCapstone.Data;
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200625202910_Initial")]
-    partial class Initial
+    [Migration("20200629023921_CSRAccessToCustomerEdit")]
+    partial class CSRAccessToCustomerEdit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b8950213-558a-4ea0-ae08-eb272a99bb34",
-                            ConcurrencyStamp = "9a9a618d-ac9b-4bf4-ae0c-9c7dcdd3d478",
+                            Id = "7b8d936b-61c4-4b8f-a4f2-ca3103a32802",
+                            ConcurrencyStamp = "079706c3-6f63-47ef-9369-97a38efc362c",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "babddecf-a9c7-4fd8-88cb-80fc36f02f17",
-                            ConcurrencyStamp = "9cfc3079-056e-44da-951e-89904ce5325d",
+                            Id = "19b30fb5-c392-4063-bf91-61d4fa28fd18",
+                            ConcurrencyStamp = "42d3bf75-bdf1-4b5e-832b-873703181b62",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "acfb747d-b5f5-46ca-9fc0-7bec25ad7254",
-                            ConcurrencyStamp = "03cd9209-1d31-4802-88f8-de378970010b",
+                            Id = "f55041eb-2ede-4585-a99e-88a1ecabf5c2",
+                            ConcurrencyStamp = "38ee02b2-a950-46ed-ad7e-ea5851b1494c",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -240,33 +240,43 @@ namespace MorimotoCapstone.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MorimotoCapstone.Models.Cart", b =>
+            modelBuilder.Entity("MorimotoCapstone.Models.Appointment", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CartId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("CartTotal")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProductId1")
+                    b.Property<DateTime>("AppointmentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CustomerAccountId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId");
+                    b.Property<int>("OrderDetailId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductId1");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Carts");
+                    b.Property<int?>("ServiceInstallOrderOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceOrderDetailOrderDetailId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerAccountId");
+
+                    b.HasIndex("ServiceInstallOrderOrderId");
+
+                    b.HasIndex("ServiceOrderDetailOrderDetailId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
@@ -536,6 +546,32 @@ namespace MorimotoCapstone.Migrations
                     b.ToTable("ServiceOrderDetails");
                 });
 
+            modelBuilder.Entity("MorimotoCapstone.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("CartTotal")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProductPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -587,11 +623,19 @@ namespace MorimotoCapstone.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MorimotoCapstone.Models.Cart", b =>
+            modelBuilder.Entity("MorimotoCapstone.Models.Appointment", b =>
                 {
-                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
+                    b.HasOne("MorimotoCapstone.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("ProductId1");
+                        .HasForeignKey("CustomerAccountId");
+
+                    b.HasOne("MorimotoCapstone.Models.ServiceInstallOrder", "ServiceInstallOrder")
+                        .WithMany()
+                        .HasForeignKey("ServiceInstallOrderOrderId");
+
+                    b.HasOne("MorimotoCapstone.Models.ServiceOrderDetail", "ServiceOrderDetail")
+                        .WithMany()
+                        .HasForeignKey("ServiceOrderDetailOrderDetailId");
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
@@ -626,6 +670,13 @@ namespace MorimotoCapstone.Migrations
                     b.HasOne("MorimotoCapstone.Models.ServiceInstallOrder", "ServiceInstallOrder")
                         .WithMany("ServiceOrderDetails")
                         .HasForeignKey("ServiceInstallOrderOrderId");
+                });
+
+            modelBuilder.Entity("MorimotoCapstone.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
                 });
 #pragma warning restore 612, 618
         }

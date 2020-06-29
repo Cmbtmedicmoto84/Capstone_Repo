@@ -10,8 +10,8 @@ using MorimotoCapstone.Data;
 namespace MorimotoCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200626182729_WorkingOnAddingTwilioAPI")]
-    partial class WorkingOnAddingTwilioAPI
+    [Migration("20200628011627_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,22 +50,22 @@ namespace MorimotoCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cd4c6036-519c-4a66-b6c3-cecd9faf471f",
-                            ConcurrencyStamp = "1f5035a5-ee87-4937-8688-5db3cc2219b0",
+                            Id = "7f9d91ce-fa07-4579-9ad9-7265c4f20f0c",
+                            ConcurrencyStamp = "54959f29-2629-4599-8d9c-9388d06c73a3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "ffd3f73a-2e5f-4d33-96b7-4d676d6ccf36",
-                            ConcurrencyStamp = "44d98258-7102-443d-a448-4d66cedebfc8",
+                            Id = "196817c3-a47d-4e7b-9936-3c95b129d439",
+                            ConcurrencyStamp = "933c90ce-4ba4-4601-b777-ad7908c5dfe4",
                             Name = "InstallTech",
                             NormalizedName = "INSTALLTECH"
                         },
                         new
                         {
-                            Id = "3f44d6b9-5ef9-48c1-aa40-c320e5d17ece",
-                            ConcurrencyStamp = "f5692b01-df43-4f4e-8590-9992675468cf",
+                            Id = "d4bddf95-4e28-4f7d-83b0-644209a32a4f",
+                            ConcurrencyStamp = "b9d82be6-c5ce-430e-836e-1934d8cffe7c",
                             Name = "CustomerServiceRep",
                             NormalizedName = "CUSTOMERSERVICEREP"
                         });
@@ -268,35 +268,6 @@ namespace MorimotoCapstone.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("MorimotoCapstone.Models.Cart", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CartId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("CartTotal")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProductId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId");
-
-                    b.HasIndex("ProductId1");
-
-                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>
@@ -615,13 +586,6 @@ namespace MorimotoCapstone.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MorimotoCapstone.Models.Cart", b =>
-                {
-                    b.HasOne("MorimotoCapstone.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId1");
                 });
 
             modelBuilder.Entity("MorimotoCapstone.Models.Customer", b =>

@@ -16,8 +16,6 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using MorimotoCapstone.ActionFilters;
 using MorimotoCapstone.Models;
-using Hangfire;
-using Hangfire.SqlServer;
 
 namespace MorimotoCapstone
 {
@@ -29,7 +27,6 @@ namespace MorimotoCapstone
         }
 
         public IConfiguration Configuration { get; }
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,7 +47,6 @@ namespace MorimotoCapstone
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddScoped(sp => Cart.GetCart(sp));
 
             services.AddMvc();
             services.AddMemoryCache();
@@ -58,7 +54,6 @@ namespace MorimotoCapstone
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,13 +74,10 @@ namespace MorimotoCapstone
             app.UseStaticFiles();
             app.UseSession();
 
-            //app.UseHangfireDashboard("/jobs");
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -95,6 +87,5 @@ namespace MorimotoCapstone
                 endpoints.MapRazorPages();
             });
         }
-
     }
 }

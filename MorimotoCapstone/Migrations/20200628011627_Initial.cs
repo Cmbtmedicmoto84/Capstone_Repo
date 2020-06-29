@@ -8,6 +8,23 @@ namespace MorimotoCapstone.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false),
+                    Time = table.Column<DateTime>(nullable: false),
+                    Timezone = table.Column<string>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -294,29 +311,6 @@ namespace MorimotoCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Carts",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CartId = table.Column<string>(nullable: true),
-                    Count = table.Column<int>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    CartTotal = table.Column<double>(nullable: false),
-                    ProductId1 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Carts", x => x.ProductId);
-                    table.ForeignKey(
-                        name: "FK_Carts_Products_ProductId1",
-                        column: x => x.ProductId1,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServiceOrderDetails",
                 columns: table => new
                 {
@@ -350,9 +344,9 @@ namespace MorimotoCapstone.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b8950213-558a-4ea0-ae08-eb272a99bb34", "9a9a618d-ac9b-4bf4-ae0c-9c7dcdd3d478", "Customer", "CUSTOMER" },
-                    { "babddecf-a9c7-4fd8-88cb-80fc36f02f17", "9cfc3079-056e-44da-951e-89904ce5325d", "InstallTech", "INSTALLTECH" },
-                    { "acfb747d-b5f5-46ca-9fc0-7bec25ad7254", "03cd9209-1d31-4802-88f8-de378970010b", "CustomerServiceRep", "CUSTOMERSERVICEREP" }
+                    { "7f9d91ce-fa07-4579-9ad9-7265c4f20f0c", "54959f29-2629-4599-8d9c-9388d06c73a3", "Customer", "CUSTOMER" },
+                    { "196817c3-a47d-4e7b-9936-3c95b129d439", "933c90ce-4ba4-4601-b777-ad7908c5dfe4", "InstallTech", "INSTALLTECH" },
+                    { "d4bddf95-4e28-4f7d-83b0-644209a32a4f", "b9d82be6-c5ce-430e-836e-1934d8cffe7c", "CustomerServiceRep", "CUSTOMERSERVICEREP" }
                 });
 
             migrationBuilder.InsertData(
@@ -405,11 +399,6 @@ namespace MorimotoCapstone.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carts_ProductId1",
-                table: "Carts",
-                column: "ProductId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Customers_IdentityUserId",
                 table: "Customers",
                 column: "IdentityUserId");
@@ -438,6 +427,9 @@ namespace MorimotoCapstone.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -451,9 +443,6 @@ namespace MorimotoCapstone.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "Customers");

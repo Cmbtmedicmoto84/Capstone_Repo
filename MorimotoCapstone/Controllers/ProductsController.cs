@@ -12,13 +12,12 @@ namespace MorimotoCapstone.Controllers
 {
     public class ProductsController : Controller
     {
-        readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public ProductsController(ApplicationDbContext context)
         {
             _context = context;
         }
-
 
         // GET: ProductsController
         public ActionResult Index()

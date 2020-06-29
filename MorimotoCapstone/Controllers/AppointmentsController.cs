@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MorimotoCapstone.Data;
 using MorimotoCapstone.Models;
 
@@ -15,120 +14,140 @@ namespace MorimotoCapstone.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public AppointmentsController() : this(new ApplicationDbContext()) { }
-
         public AppointmentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public SelectListItem[] TimeZones
+        // GET: Appointments
+        public async Task<IActionResult> Index()
         {
-            get
+            return View(await _context.Appointments.ToListAsync());
+        }
+
+        // GET: Appointments/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
             {
-                var systemTimeZones = TimeZoneInfo.GetSystemTimeZones();
-                return systemTimeZones.Select(systemTimeZones => new SelectListItem
-                {
-                    Text = systemTimeZones.DisplayName,
-                    Value = systemTimeZones.Id
-                }).ToArray();
+                return NotFound();
             }
-        }
-        // GET: AppointmentsController
-        public ActionResult Index()
-        {
-            var appointments = _context.Appointments.ToList();
-            return View(appointments);
-        }
 
-        // GET: AppointmentsController/Details/5
-        public ActionResult Details(int id)
-        {
-            var appointmentId = _context.Appointments.Where(appt => appt.Id == id).SingleOrDefault();
-            return View(appointmentId);
-        }
-
-        // GET: AppointmentsController/Create
-        public ActionResult Create()
-        {
-            ViewBag.Timezones = TimeZones;
-            var appointment = new Appointment
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (appointment == null)
             {
-                Timezone = "Central Standard Time",
-                Time = DateTime.Now
-            };
+                return NotFound();
+            }
+
             return View(appointment);
         }
 
-        // POST: AppointmentsController/Create
+        // GET: Appointments/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Appointments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("ID,Name,PhoneNumber,Time,Timezone")]Appointment appointment)
+        public async Task<IActionResult> Create([Bind("Id,OrderDetailId,OrderId,AppointmentTime,AppointmentDate")] Appointment appointment)
         {
-            appointment.CreatedAt = DateTime.Now;
-
             if (ModelState.IsValid)
             {
                 _context.Add(appointment);
-
-                return RedirectToAction("Details", new { id = appointment.Id });
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            {
-                return View("Create", appointment);
-            }
+            return View(appointment);
         }
 
-        // GET: AppointmentsController/Edit/5
+        // GET: Appointments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment == null)
             {
                 return NotFound();
             }
-
-            ViewBag.Timezones = TimeZones;
             return View(appointment);
         }
 
-        // POST: AppointmentsController/Edit/5
+        // POST: Appointments/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDetailId,OrderId,AppointmentTime,AppointmentDate")] Appointment appointment)
         {
-            try
+            if (id != appointment.Id)
             {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(appointment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AppointmentExists(appointment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(appointment);
         }
 
-        // GET: AppointmentsController/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Appointments/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            return View(appointment);
         }
 
-        // POST: AppointmentsController/Delete/5
-        [HttpPost]
+        // POST: Appointments/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var appointment = await _context.Appointments.FindAsync(id);
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool AppointmentExists(int id)
+        {
+            return _context.Appointments.Any(e => e.Id == id);
         }
     }
 }

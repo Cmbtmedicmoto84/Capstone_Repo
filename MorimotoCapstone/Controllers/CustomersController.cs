@@ -17,7 +17,7 @@ namespace MorimotoCapstone.Controllers
 {
     public class CustomersController : Controller
     {
-        readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public CustomersController(ApplicationDbContext context)
         {
@@ -78,19 +78,13 @@ namespace MorimotoCapstone.Controllers
         }
 
         // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        //[Authorize(Roles = "CustomerServiceRep")]
+        [HttpGet]
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            return View(customer);
+            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customersInDb = _context.Customers.Where(c => c.CustomerAccountId == id).SingleOrDefault();
+            return View(customersInDb);
         }
 
         // POST: Customers/Edit/5
@@ -98,6 +92,7 @@ namespace MorimotoCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "CustomerServiceRep")]
         public async Task<IActionResult> Edit(int id, [Bind("CustomerAccountId,FirstName,LastName,AddressLineOne,AddressLineTwo,City,State,ZipCode,ServiceStatus,AccountBalance,IdentityUserId,ProductId")] Customer customer)
         {
             if (id != customer.CustomerAccountId)
@@ -109,6 +104,7 @@ namespace MorimotoCapstone.Controllers
             {
                 try
                 {
+
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
@@ -129,6 +125,7 @@ namespace MorimotoCapstone.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Authorize(Roles = "CustomerServiceRep")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,6 +147,7 @@ namespace MorimotoCapstone.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CustomerServiceRep")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customers.FindAsync(id);

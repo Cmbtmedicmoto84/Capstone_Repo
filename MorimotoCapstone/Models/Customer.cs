@@ -46,10 +46,6 @@ namespace MorimotoCapstone.Models
         public string ServiceStatus { get; set; }
         public string AccountBalance { get; set; }
 
-        //[ForeignKey("Product")] //subscribed product
-        //public int ProductId { get; set; }
-        //public Product Product { get; set; }
-
         //public IEnumerable<Product> Products { get; set; }
 
         [ForeignKey("IdentityUser")]

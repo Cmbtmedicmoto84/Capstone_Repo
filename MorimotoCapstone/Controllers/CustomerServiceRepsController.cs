@@ -17,7 +17,7 @@ namespace MorimotoCapstone.Controllers
 {
     public class CustomerServiceRepsController : Controller
     {
-        readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public CustomerServiceRepsController(ApplicationDbContext context)
         {
@@ -33,14 +33,16 @@ namespace MorimotoCapstone.Controllers
             {
                 return RedirectToAction("Create");
             }
-            return View("Index");
+            var customers = _context.Customers.ToList();
+            return View(customers);
         }
 
         // GET: CustomerServiceReps/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Detail(int id)
         {
-            var loggedInCustomerServiceRep = _context.CustomerServiceReps.Include(csr => csr.IdentityUserId).SingleOrDefault(csr => csr.CustomerServiceRepId == id);
-            return View(loggedInCustomerServiceRep);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(c => c.CustomerAccountId == id).FirstOrDefault();
+            return View("Detail");
         }
 
         // GET: CustomerServiceReps/Create
@@ -71,45 +73,43 @@ namespace MorimotoCapstone.Controllers
             return View(customerServiceRep);
         }
 
-        // GET: CustomerServiceReps/Edit/5
-        //[HttpGet]
-        //public IActionResult Edit(int id)
-        //{
-        //    var userId = _context.Customers.Where(c => c.AccountNumber == id).FirstOrDefault();
-        //    var customersInDb = _context.Customers.Include(c => c.AccountNumber).FirstOrDefault();
-        //    return View();
-        //}
+        //GET: CustomerServiceReps/Edit/5
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var customersInDb = _context.Customers.Where(c => c.CustomerAccountId == id).FirstOrDefault();
+            return View(customersInDb);
+        }
 
-        // POST: CustomerServiceReps/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Edit(int id, Customer customers)
-        //{
-        //    var customersInDb = _context.Customers.Where(c => c.AccountNumber == id).FirstOrDefault();
-        //    Customer customer = null;
-        //    customer = customersInDb;
-        //    try
-        //    {
-        //        customer.FirstName = Request.Form["FirstName"];
-        //        customer.LastName = Request.Form["LastName"];
-        //        customer.AddressLineOne = Request.Form["AddressLineOne"];
-        //        customer.AddressLineTwo = Request.Form["AddressLineTwo"];
-        //        customer.City = Request.Form["City"];
-        //        customer.State = Request.Form["State"];
-        //        customer.ZipCode = Request.Form["ZipCode"];
-        //        customer.ServiceStatus = Request.Form["ServiceStatus"];
-        //        customer.AccountBalance = Request.Form["AccountBalance"];
-        //        _context.Customers.Update(customer);
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index"); //need to work on IEnumerable for customer side
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        ////POST: CustomerServiceReps/Edit/5
+        // //To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // //more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Customer customer)
+        {
+            var customersInDb = _context.Customers.Where(c => c.CustomerAccountId == id).FirstOrDefault();
+            
+            try
+            {
+                customer.FirstName = Request.Form["FirstName"];
+                customer.LastName = Request.Form["LastName"];
+                customer.AddressLineOne = Request.Form["AddressLineOne"];
+                customer.AddressLineTwo = Request.Form["AddressLineTwo"];
+                customer.City = Request.Form["City"];
+                customer.State = Request.Form["State"];
+                customer.ZipCode = Request.Form["ZipCode"];
+                customer.ServiceStatus = Request.Form["ServiceStatus"];
+                customer.AccountBalance = Request.Form["AccountBalance"];
+                _context.Customers.Update(customer);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         //// GET: CustomerServiceReps/Delete/5
         //public async Task<IActionResult> Delete(int? id)

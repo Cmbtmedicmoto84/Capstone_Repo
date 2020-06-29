@@ -4,57 +4,56 @@
     ViewData["Title"] = "Index";
 }
 
-<div>
-    <h1>Appointments</h1>
-</div>
+<h1>Index</h1>
 
-<table class="table-striped">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            Actions
-        </th>
-    </tr>
-    @foreach (var item in Model) {
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.ActionLink(item.Id.ToString(), "Details", new { Controller = "Appointments", id = item.Id})
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.OrderDetailId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                @Html.DisplayFor(modelItem => item.OrderId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Time)
+                @Html.DisplayFor(modelItem => item.AppointmentTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item.AppointmentDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { Controller = "Appointments", id = item.Id}, new { @class = "btn btn-default btn-xs" })
-
-                @Html.ActionLink("Delete", "Appointments",
-               new { id = item.Id },
-               new { @class = "btn btn-danger btn-xs", onclick = "return confirm('Are you sure?');"})
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-    }
+}
+    </tbody>
 </table>
-
-@Html.ActionLink("New", "Create", new { Controller = "Appointment" }, new { @class = "btn btn-primary"})

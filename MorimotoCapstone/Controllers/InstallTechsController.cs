@@ -16,7 +16,7 @@ namespace MorimotoCapstone.Controllers
 {
     public class InstallTechsController : Controller
     {
-        readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public InstallTechsController(ApplicationDbContext context)
         {

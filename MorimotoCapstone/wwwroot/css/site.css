@@ -7,6 +7,30 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+table, th, td {
+    border: 1px solid white;
+    color: white;
+}
+
+.button {
+    background-color: #4d4c4c;
+    color: white;
+    border: 2px solid #00ffff;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button:hover {
+        background-color: #4793fc;
+        color: #00ff21;
+        border: 2px solid #000000;
+}   
+
 /* Provide sufficient contrast against white background */
 a {
     color: #ffc107;

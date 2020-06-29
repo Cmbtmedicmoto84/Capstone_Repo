@@ -24,18 +24,11 @@ namespace MorimotoCapstone
         {
             CreateHostBuilder(args).Build().Run();
 
-            const string accountSid = "AC8a3820e8edbcf17c606936a77b6fae05";
-            const string authToken = "06f1c2f40650d71de692491002ce40ee";
+            //insert Twilio Auth code here!
 
-            TwilioClient.Init(accountSid, authToken);
+            
 
-            var message = MessageResource.Create(
-                body: "I am Iron Man!",
-                from: new Twilio.Types.PhoneNumber("+12057514836"),
-                to: new Twilio.Types.PhoneNumber("+14144846175")
-            );
-
-            Console.WriteLine(message.Sid);
+            
         }
 
 
